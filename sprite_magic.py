@@ -5,10 +5,11 @@ Created on Nov 24, 2013
 '''
 
 import Tkinter as tk
+import tkFileDialog as tkf
 
-from widgets.Selector import Selector
-from widgets.Licensing import Licensing
-from widgets.Preview import Preview
+from widgets.selector import Selector
+from widgets.licensing import Licensing
+from widgets.preview import Preview
 
 class App( tk.Tk ):
     def __init__( self ):
@@ -20,6 +21,9 @@ class App( tk.Tk ):
 
         # Menu bar for the main window
         self.setupMenuBar()
+
+        # Setup of main window
+        self.setupMainWindow()
 
         # Spawn windows for each major function
         self.showSelector()
@@ -47,6 +51,32 @@ class App( tk.Tk ):
 
         # Make it active
         self.config( menu = menubar )
+
+    def setupMainWindow( self ):
+        self.working_directory = None
+        self.label_working_directory = tk.Label( self, text = "Working Directory:" )
+        self.label_working_directory.pack()
+        self.label_working_directory_value = tk.Label( self, text = "" )
+        self.label_working_directory_value.pack()
+        self.updateWorkingDirectoryLabels()
+
+        button = tk.Button( self, text = "Select artwork directory", command = self.onSelectArtworkPressed )
+        button.pack()
+
+    def onSelectArtworkPressed( self ):
+        directory = tkf.askdirectory( parent = self, title = "Select the root directory for your artwork" )
+        if directory == "":
+            return
+
+        self.working_directory = directory
+        self.updateWorkingDirectoryLabels()
+
+    def updateWorkingDirectoryLabels( self ):
+        if self.working_directory is None:
+            self.label_working_directory_value.config( text = "No artwork directory selected", font = "Helvetica 10 italic" )
+            return
+
+        self.label_working_directory_value.config( text = self.working_directory, font = "Helvetica 10" )
 
     def showSelector( self ):
         window = tk.Toplevel( self )
