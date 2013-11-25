@@ -7,7 +7,13 @@
         "right"
     ],
     "actions": [
-        "name": "running"
-        "frames": 4
+	    {
+    	    "name": "running",
+        	"frames": 4
+	    },
+	    {
+    	    "name": "jumping",
+        	"frames": 2
+	    }
     ]
 }
