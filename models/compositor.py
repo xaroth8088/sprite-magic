@@ -1,8 +1,7 @@
 """ The compositor is responsible for keeping track of which sprite layers the user wants to combine, and how.
 """
 
-import type_manager
-import sprite_layer_manager
+import spec_manager
 
 _SELECTED_TYPE = None  # Which sprite type has the user selected?
 _SELECTED_LAYERS = []  # The layers that the user is actively looking at, in order
@@ -19,7 +18,10 @@ def DeregisterView( view ):
 
 def _NotifyViews():
     for view in _REGISTERED_VIEWS:
-        view.onModelUpdated()
+        view.on_model_updated()
 
-type_manager.LoadTypes()
-sprite_layer_manager.LoadLayers()
+def GetSelectedLayers():
+    global _SELECTED_LAYERS
+    return _SELECTED_LAYERS
+
+spec_manager.LoadSpecs()

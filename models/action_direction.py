@@ -3,7 +3,9 @@ For example, the file and physical location needed to render a character walking
 """
 
 class ActionDirection():
-    def __init__( self ):
-        self.direction = "right"
-        self.path = ""
+    def __init__( self, data ):
+        self.name = data.get( "name", "Unnamed direction" )
         self.frames = []
+        avail_frames = data.get( "frames", [] )
+        for frame in avail_frames:
+            self.frames.append(frame)

@@ -1,0 +1,4 @@
+* A wizard to help create .spec files
+* Unit tests
+* Proper logging
+* Validation for edge cases (missing / bad .spec files, missing directories, etc.)
