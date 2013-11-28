@@ -20,6 +20,19 @@ def _NotifyViews():
     for view in _REGISTERED_VIEWS:
         view.on_model_updated()
 
+def SetSelectedType( sprite_type_name ):
+    global _SELECTED_TYPE
+    _SELECTED_TYPE = spec_manager.GetTypeByName( sprite_type_name )
+
+def GetSheetsByLayer( layer_name ):
+    global _SELECTED_TYPE
+    layers = spec_manager.GetGroupSheetsByLayer( _SELECTED_TYPE.group_name, layer_name )
+    return layers
+
+def GetAvailableLayers():
+    global _SELECTED_TYPE
+    return spec_manager.GetGroupLayers( _SELECTED_TYPE.group_name )
+
 def GetSelectedLayers():
     global _SELECTED_LAYERS
     return _SELECTED_LAYERS

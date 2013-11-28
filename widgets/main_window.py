@@ -6,6 +6,7 @@ import Tkinter as tk
 from widgets.type_selector import TypeSelector
 from widgets.licensing import Licensing
 from widgets.preview import Preview
+from widgets.sheet_selector import SheetSelector
 import models.compositor
 
 class MainWindow( tk.Tk ):
@@ -14,7 +15,7 @@ class MainWindow( tk.Tk ):
 
         # Set up the menu window
         self.title( "Sprite Magic" )
-        self.geometry('200x400+40+40')
+        self.geometry( '200x400+40+40' )
 
         # Menu bar for the main window
         self.setupMenuBar()
@@ -58,18 +59,22 @@ class MainWindow( tk.Tk ):
     def setupMainWindow( self ):
         self.type_selector = TypeSelector( self )
 
+        # TODO: DEBUG
+        layers = models.compositor.GetAvailableLayers()
+        self.layer_selector = SheetSelector( self, layers[0] )
+
     def showPreview( self ):
         window = tk.Toplevel( self )
         window.geometry( '400x400+5000+40' )
         window.transient( self )
-        window.title("Preview")
+        window.title( "Preview" )
         self.preview_window = Preview( window )
 
     def showLicensing( self ):
         window = tk.Toplevel( self )
-        window.geometry( "400x200+40+1000")
+        window.geometry( "400x200+40+1000" )
         window.transient( self )
-        window.title("License Information")
+        window.title( "License Information" )
         self.licensing_window = Licensing( window )
 
     def exit( self, event ):

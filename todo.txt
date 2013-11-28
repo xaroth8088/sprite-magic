@@ -2,3 +2,5 @@
 * Unit tests
 * Proper logging
 * Validation for edge cases (missing / bad .spec files, missing directories, etc.)
+
+****** Something in the topology inside spec_manager is still wrong.  Rethink the topology from the ground up, then re-implement.

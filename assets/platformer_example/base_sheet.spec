@@ -1,5 +1,5 @@
 {
-	"layers": [
+	"sheets": [
 	{
 	    "name": "Example Base Character",
 	    "layer": "base",

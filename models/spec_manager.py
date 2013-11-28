@@ -3,56 +3,65 @@
 
 import glob
 import json
+import os
+from collections import defaultdict
 
-from models.sprite_layer import SpriteLayer
+from models.sprite_sheet import SpriteSheet
 from sprite_type import SpriteType
 
-_LAYERS = {}
-_TYPES = []
+_SHEETS = None
+_TYPES = None
 
 def LoadSpecs():
-    global _LAYERS
+    global _SHEETS
     global _TYPES
-    
-    _LAYERS = {}
-    _TYPES = []
+
+    _SHEETS = defaultdict( lambda: defaultdict( lambda: {} ) )
+    _TYPES = {}
 
     # In assets/types, load each .spec file
-    for filename in glob.glob('assets/*/*.spec'):
-        _LoadSpec(filename)
+    for filename in glob.glob( 'assets/*/*.spec' ):
+        _LoadSpec( filename )
 
-def _LoadSpec(filename):
+def _LoadSpec( filename ):
     # Read in the file
-    json_data = open(filename)
+    json_data = open( filename )
 
     # Parse as JSON
     try:
-        data = json.load(json_data)
+        data = json.load( json_data )
     except Exception as err:
-        print "Unable to load .spec file (%s): %s" % (err, filename)
+        print "Unable to load .spec file (%s): %s" % ( err, filename )
         json_data.close()
         return
 
     # Close file
     json_data.close()
 
-    # If layers are present, create a new SpriteType object with that data for each layer
-    if "layers" in data:
-        for layer_data in data["layers"]:
-            print "Loading layer spec: ", filename
-            sprite_layer = SpriteLayer(layer_data)
-            _LAYERS[sprite_layer.name] = sprite_layer
+    # Determine which key we'll put this under
+    group_name = filename.split( os.sep )[1]
+
+    # If sheets are present, create SpriteSheet objects and organize them into layers
+    if "sheets" in data:
+        for sheet_data in data["sheets"]:
+            print "Loading sheet spec: ", filename
+            sprite_sheet = SpriteSheet( sheet_data, group_name )
+            _SHEETS[group_name][sprite_sheet.layer][sprite_sheet.name] = sprite_sheet
 
     # If a type is enclosed, create a new SpriteType object with that data
     if "type" in data:
         print "Loading type spec: ", filename
-        sprite_type = SpriteType( data["type"] )
-        _TYPES.append(sprite_type)
+        sprite_type = SpriteType( data["type"], group_name )
+        _TYPES[sprite_type.name] = sprite_type
 
+def GetGroupSheetsByLayer( group_name, layer_name ):
+    return _SHEETS[group_name][layer_name]
 
-def GetAvailableLayers():
-    global _LAYERS
-    return _LAYERS
+def GetGroupLayers( group_name ):
+    return _SHEETS[group_name].keys()
+
+def GetTypeByName( type_name ):
+    return _TYPES[type_name]
 
 def GetAvailableTypes():
     global _TYPES
