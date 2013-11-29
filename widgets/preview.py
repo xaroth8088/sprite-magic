@@ -7,7 +7,7 @@ Created on Nov 24, 2013
 import Tkinter as tk
 
 
-from widgets.preview_animation import PreviewAnimation
+from widgets.preview_action import PreviewAction
 from models.compositor import COMPOSITOR
 
 class Preview( tk.Frame ):
@@ -24,10 +24,9 @@ class Preview( tk.Frame ):
             temp.grid()
             return
 
-        for direction in selected_type.directions:
-            for action in selected_type.actions:
-                anim = PreviewAnimation( self, COMPOSITOR.GetSprites( action["name"], direction ) )
-                anim.grid()
+        for action in selected_type.actions:
+            anim = PreviewAction( self, action )
+            anim.grid()
 
     def on_model_updated( self ):
         # TODO: The compositor changed state, so make sure we're up to date, too.
