@@ -12,9 +12,8 @@ class _Compositor():
         self._selected_layers = []  # The layers that the user is actively looking at, in order
         self._animation_speed = 60  # Number of milliseconds between frames
         self._registered_views = []  # Which views want to know when we update?
-        self._frame_counter = 0
-        self._sprites = {}
-        self._selected_sheets = {}
+        self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )  # PIL Image objects for each action and direction
+        self._selected_sheets = {}  # The sprite_sheet objects that are presently active
         self._loaded = False
 
         # Ensure the spec manager actually has specs for us
@@ -138,6 +137,9 @@ class _Compositor():
 
     def GetSelectedType( self ):
         return self._selected_type
+
+    def GetSelectedSheets( self ):
+        return self._selected_sheets
 
 # Instantiate the external-facing instance
 COMPOSITOR = _Compositor()

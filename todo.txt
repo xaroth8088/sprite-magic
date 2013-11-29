@@ -5,3 +5,5 @@
 * Permit spec files to refer to images inside of subdirectories in a platform-independent way (use '/'s for path separator, then regex them out for os.sep)
 * Permit sheet spec files to include an offset into the image for the grid
 * Permit sheet spec files to include absolute image coordinates, instead of the implied grid
+* Organize the licensing information more logically
+* Give a button to copy the licensing information to clipboard (with a confirmation dialog upon clicking, so they know it's in the buffer)

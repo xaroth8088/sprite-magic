@@ -60,7 +60,7 @@ class MainWindow( tk.Tk ):
 
     def showLicensing( self ):
         window = tk.Toplevel( self )
-        window.geometry( "400x200+40-40" )
+        window.geometry( "640x400+40-40" )
         window.transient( self )
         window.title( "License Information" )
         self.licensing_window = Licensing( window )
