@@ -18,9 +18,6 @@ class Preview( tk.Frame ):
         self.on_model_updated()
 
     def _setup_view( self ):
-        temp = tk.Label( self, text = "preview pane goes here" )
-        temp.grid()
-
         selected_type = COMPOSITOR.GetSelectedType()
         if selected_type is None:
             temp = tk.Label( self, text = "No type selected" )

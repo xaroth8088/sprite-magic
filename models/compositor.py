@@ -10,7 +10,7 @@ class _Compositor():
     def __init__( self ):
         self._selected_type = None  # Which sprite type has the user selected?
         self._selected_layers = []  # The layers that the user is actively looking at, in order
-        self._animation_speed = 0.25  # Number of seconds between frames
+        self._animation_speed = 60  # Number of milliseconds between frames
         self._registered_views = []  # Which views want to know when we update?
         self._frame_counter = 0
         self._sprites = {}
@@ -104,7 +104,6 @@ class _Compositor():
             for direction in self._selected_type.directions:
                 # For each frame:
                 for frame in range( 0, action["frames"] ):
-                    print "Creating frame: %s action: %s direction: %s" % ( frame, action["name"], direction )
                     # Make a new Image to store the sprite frame
                     sprite = Image.new( "RGBA", ( self._selected_type.tile_width, self._selected_type.tile_height ) )
 
@@ -115,7 +114,6 @@ class _Compositor():
                             continue
                         # Load the raw spritesheet image
                         image_name = selected_sheet.file_path
-                        print "Adding image: %s for layer: %s" % ( image_name, layer )
                         path = "assets/%s/%s" % ( self._selected_type.group_name, image_name )
                         raw_sheet = Image.open( path )
 
