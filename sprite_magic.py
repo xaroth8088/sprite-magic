@@ -2,9 +2,9 @@
 """
 
 import os
-from widgets.main_window import MainWindow
+from windows.main_window import MainWindow
 
-os.chdir(os.path.dirname(__file__))
+os.chdir( os.path.dirname( __file__ ) )
 
 def main():
     app = MainWindow()

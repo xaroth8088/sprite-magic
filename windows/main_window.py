@@ -3,11 +3,9 @@ Serves as the hub for all other widgets.
 """
 import Tkinter as tk
 
-from widgets.type_selector import TypeSelector
 from widgets.licensing import Licensing
 from widgets.preview import Preview
-from widgets.sheet_selector import SheetSelector
-import models.compositor
+from widgets.selector import Selector
 
 class MainWindow( tk.Tk ):
     def __init__( self ):
@@ -20,20 +18,12 @@ class MainWindow( tk.Tk ):
         # Menu bar for the main window
         self.setupMenuBar()
 
-        # Register for changes on the compositor
-        models.compositor.RegisterView( self )
-
         # Spawn windows for each major function
         self.showPreview()
         self.showLicensing()
 
         # Setup of main window
         self.setupMainWindow()
-        self.on_model_updated()
-
-    def on_model_updated( self ):
-        # TODO: The compositor changed state, so make sure we're up to date, too.
-        pass
 
     def setupMenuBar( self ):
         menubar = tk.Menu( self )
@@ -57,25 +47,24 @@ class MainWindow( tk.Tk ):
         self.config( menu = menubar )
 
     def setupMainWindow( self ):
-        self.type_selector = TypeSelector( self )
-
-        # TODO: DEBUG
-        layers = models.compositor.GetAvailableLayers()
-        self.layer_selector = SheetSelector( self, layers[0] )
+        self.selector = Selector( self )
+        self.selector.pack()
 
     def showPreview( self ):
         window = tk.Toplevel( self )
-        window.geometry( '400x400+5000+40' )
+        window.geometry( '400x400-40+40' )
         window.transient( self )
         window.title( "Preview" )
         self.preview_window = Preview( window )
+        self.preview_window.pack()
 
     def showLicensing( self ):
         window = tk.Toplevel( self )
-        window.geometry( "400x200+40+1000" )
+        window.geometry( "400x200+40-40" )
         window.transient( self )
         window.title( "License Information" )
         self.licensing_window = Licensing( window )
+        self.licensing_window.pack()
 
     def exit( self, event ):
         self.quit()

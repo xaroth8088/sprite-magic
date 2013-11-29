@@ -8,15 +8,15 @@ import Tkinter as tk
 
 import models.compositor
 
-class Licensing():
+class Licensing( tk.Frame ):
     def __init__( self, master ):
-        self.master = master
+        tk.Frame.__init__( self, master )
         models.compositor.RegisterView( self )
         self._setup_view()
         self.on_model_updated()
 
     def _setup_view( self ):
-        temp = tk.Label( self.master, text = "licensing pane goes here" )
+        temp = tk.Label( self, text = "licensing pane goes here" )
         temp.pack()
 
     def on_model_updated( self ):

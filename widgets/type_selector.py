@@ -9,16 +9,16 @@ import Tkinter as tk
 from models.spec_manager import GetAvailableTypes
 import models.compositor
 
-class TypeSelector():
+class TypeSelector( tk.Frame ):
     def __init__( self, master ):
-        self.master = master
+        tk.Frame.__init__( self, master )
         models.compositor.RegisterView( self )
 
         self._setup_view()
         self.on_model_updated()
 
     def _setup_view( self ):
-        temp = tk.Label( self.master, text = "Game Type" )
+        temp = tk.Label( self, text = "Game Type" )
         temp.pack()
 
         self._setup_types()
@@ -26,11 +26,11 @@ class TypeSelector():
     def _setup_types( self ):
         types = GetAvailableTypes()
         types = [data.name for data in types.values()]
-        self.variable = tk.StringVar( self.master )
+        self.variable = tk.StringVar( self )
         self.variable.trace( 'w', self._on_type_selection_changed )
         self.variable.set( types[0] )  # default value
 
-        type_menu = tk.OptionMenu( self.master, self.variable, *types )
+        type_menu = tk.OptionMenu( self, self.variable, *types )
         type_menu.pack()
 
     def _on_type_selection_changed( self, name, index, mode ):
