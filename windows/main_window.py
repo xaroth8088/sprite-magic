@@ -48,7 +48,7 @@ class MainWindow( tk.Tk ):
 
     def setupMainWindow( self ):
         self.selector = Selector( self )
-        self.selector.pack()
+        self.selector.grid()
 
     def showPreview( self ):
         window = tk.Toplevel( self )
@@ -56,7 +56,7 @@ class MainWindow( tk.Tk ):
         window.transient( self )
         window.title( "Preview" )
         self.preview_window = Preview( window )
-        self.preview_window.pack()
+        self.preview_window.grid()
 
     def showLicensing( self ):
         window = tk.Toplevel( self )
@@ -64,7 +64,7 @@ class MainWindow( tk.Tk ):
         window.transient( self )
         window.title( "License Information" )
         self.licensing_window = Licensing( window )
-        self.licensing_window.pack()
+        self.licensing_window.grid()
 
     def exit( self, event ):
         self.quit()

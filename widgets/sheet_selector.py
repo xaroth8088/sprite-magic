@@ -3,7 +3,7 @@
 
 import Tkinter as tk
 
-import models.compositor
+from models.compositor import COMPOSITOR
 
 class SheetSelector( tk.Frame ):
     def __init__( self, master, layer_name ):
@@ -26,11 +26,11 @@ class SheetSelector( tk.Frame ):
         button.grid( row = 1, column = 1 )
 
     def _setup_optionmenu( self ):
-        layers = models.compositor.GetSheetsByLayer( self.layer_name ).keys()
+        layers = COMPOSITOR.GetSheetsByLayer( self.layer_name ).keys()
 
         self.variable = tk.StringVar( self )
-        self.variable.trace( 'w', self._on_layer_selection_changed )
         self.variable.set( layers[0] )
+        self.variable.trace( 'w', self._on_layer_selection_changed )
 
         layer_menu = tk.OptionMenu( self, self.variable, *layers )
         layer_menu.grid( row = 1, column = 2 )
@@ -41,13 +41,14 @@ class SheetSelector( tk.Frame ):
 
     def _on_layer_selection_changed( self, name, index, mode ):
         print "Layer selection: %s" % self.variable.get()
+        COMPOSITOR.SelectSheet( self.layer_name, self.variable.get() )
 
     def _on_up_pressed( self ):
-        models.compositor.MoveLayerUp( self.layer_name )
+        COMPOSITOR.MoveLayerUp( self.layer_name )
 
     def _on_down_pressed( self ):
-        models.compositor.MoveLayerDown( self.layer_name )
+        COMPOSITOR.MoveLayerDown( self.layer_name )
 
     def _on_destroy_button_pressed( self ):
         print "Removing layer: %s" % self.layer_name
-        models.compositor.RemoveLayer( self.layer_name )
+        COMPOSITOR.RemoveLayer( self.layer_name )

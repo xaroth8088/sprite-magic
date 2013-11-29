@@ -6,12 +6,12 @@ Created on Nov 24, 2013
 
 import Tkinter as tk
 
-import models.compositor
+from models.compositor import COMPOSITOR
 
 class Licensing( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
-        models.compositor.RegisterView( self )
+        COMPOSITOR.RegisterView( self )
         self._setup_view()
         self.on_model_updated()
 

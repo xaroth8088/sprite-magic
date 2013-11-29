@@ -7,19 +7,19 @@ Created on Nov 24, 2013
 import Tkinter as tk
 
 from models.spec_manager import GetAvailableTypes
-import models.compositor
+from models.compositor import COMPOSITOR
 
 class TypeSelector( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
-        models.compositor.RegisterView( self )
+        COMPOSITOR.RegisterView( self )
 
         self._setup_view()
         self.on_model_updated()
 
     def _setup_view( self ):
         temp = tk.Label( self, text = "Game Type" )
-        temp.pack()
+        temp.grid()
 
         self._setup_types()
 
@@ -31,11 +31,11 @@ class TypeSelector( tk.Frame ):
         self.variable.set( types[0] )  # default value
 
         type_menu = tk.OptionMenu( self, self.variable, *types )
-        type_menu.pack()
+        type_menu.grid()
 
     def _on_type_selection_changed( self, name, index, mode ):
         print "Setting type to: %s" % self.variable.get()
-        models.compositor.SetSelectedType( self.variable.get() )
+        COMPOSITOR.SetSelectedType( self.variable.get() )
 
     def on_model_updated( self ):
         # TODO: The compositor changed state, so make sure we're up to date, too.

@@ -66,3 +66,7 @@ def GetTypeByName( type_name ):
 def GetAvailableTypes():
     global _TYPES
     return _TYPES
+
+def GetSheet( group_name, layer_name, sheet_name ):
+    global _SHEETS
+    return _SHEETS[group_name][layer_name][sheet_name]

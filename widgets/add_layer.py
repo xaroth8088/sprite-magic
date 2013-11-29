@@ -6,7 +6,7 @@ Created on Nov 28, 2013
 
 import Tkinter as tk
 
-import models.compositor
+from models.compositor import COMPOSITOR
 
 class AddLayer( tk.Frame ):
     def __init__( self, master ):
@@ -18,4 +18,4 @@ class AddLayer( tk.Frame ):
         button.pack()
 
     def _on_add_pressed( self ):
-        models.compositor.AddLayer()
+        COMPOSITOR.AddLayer()

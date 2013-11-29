@@ -1,79 +1,145 @@
 """ The compositor is responsible for keeping track of which sprite layers the user wants to combine, and how.
 """
 
+from collections import defaultdict
+from PIL import Image
+
 import spec_manager
 
-_SELECTED_TYPE = None  # Which sprite type has the user selected?
-_SELECTED_LAYERS = []  # The layers that the user is actively looking at, in order
-_ANIMATION_SPEED = 0.25  # Number of seconds between frames
-_REGISTERED_VIEWS = []  # Which views want to know when we update?
+class _Compositor():
+    def __init__( self ):
+        self._selected_type = None  # Which sprite type has the user selected?
+        self._selected_layers = []  # The layers that the user is actively looking at, in order
+        self._animation_speed = 0.25  # Number of seconds between frames
+        self._registered_views = []  # Which views want to know when we update?
+        self._frame_counter = 0
+        self._sprites = {}
+        self._selected_sheets = {}
+        self._loaded = False
 
-_LOADED = False
+        # Ensure the spec manager actually has specs for us
+        spec_manager.LoadSpecs()
 
-def RegisterView( view ):
-    _REGISTERED_VIEWS.append( view )
+    def RegisterView( self, view ):
+        self._registered_views.append( view )
 
-def DeregisterView( view ):
-    _REGISTERED_VIEWS.remove( view )
+    def DeregisterView( self, view ):
+        self._registered_views.remove( view )
 
-def _NotifyViews():
-    for view in _REGISTERED_VIEWS:
-        view.on_model_updated()
+    def _notify_views( self ):
+        for view in self._registered_views:
+            view.on_model_updated()
 
-def SetSelectedType( sprite_type_name ):
-    global _SELECTED_TYPE
-    global _SELECTED_LAYERS
-    _SELECTED_LAYERS = []
-    _SELECTED_TYPE = spec_manager.GetTypeByName( sprite_type_name )
-    _NotifyViews()
+    def SetSelectedType( self, sprite_type_name ):
+        self._selected_sheets = {}
+        self._selected_layers = []
+        self._selected_type = spec_manager.GetTypeByName( sprite_type_name )
+        self._update_sprites()
+        self._notify_views()
 
-def GetSheetsByLayer( layer_name ):
-    global _SELECTED_TYPE
-    layers = spec_manager.GetGroupSheetsByLayer( _SELECTED_TYPE.group_name, layer_name )
-    return layers
+    def GetSheetsByLayer( self, layer_name ):
+        layers = spec_manager.GetGroupSheetsByLayer( self._selected_type.group_name, layer_name )
+        return layers
 
-def GetAvailableLayers():
-    global _SELECTED_TYPE
-    return spec_manager.GetGroupLayers( _SELECTED_TYPE.group_name )
+    def GetAvailableLayers( self ):
+        return spec_manager.GetGroupLayers( self._selected_type.group_name )
 
-def GetSelectedLayers():
-    global _SELECTED_LAYERS
-    return _SELECTED_LAYERS
+    def GetSelectedLayers( self ):
+        return self._selected_layers
 
-def AddLayer():
-    # Add the next available layer from the spec_manager that we don't already have
-    all_layers = spec_manager.GetGroupLayers( _SELECTED_TYPE.group_name )
-    for layer in all_layers:
-        if layer not in _SELECTED_LAYERS:
-            _SELECTED_LAYERS.append( layer )
-            _NotifyViews()
+    def AddLayer( self ):
+        # Add the next available layer from the spec_manager that we don't already have
+        all_layers = spec_manager.GetGroupLayers( self._selected_type.group_name )
+        for layer in all_layers:
+            if layer not in self._selected_layers:
+                # Add the selected layer and pick a default selected sheet for that layer
+                self._selected_layers.append( layer )
+                sheets = self.GetSheetsByLayer( layer ).keys()
+                self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheets[0] )
+
+                self._update_sprites()
+                self._notify_views()
+                return
+
+    def RemoveLayer( self, layer_name ):
+        self._selected_layers.pop( self._selected_layers.index( layer_name ) )
+        self._selected_sheets.pop( layer_name )
+        self._update_sprites()
+        self._notify_views()
+
+    def MoveLayerUp( self, layer_name ):
+        self._move_layer( layer_name, -1 )
+
+    def MoveLayerDown( self, layer_name ):
+        self._move_layer( layer_name, 1 )
+
+    def _move_layer( self, layer_name, direction ):
+        # Get our two indices to swap
+        i = self._selected_layers.index( layer_name )
+        j = i + direction
+
+        # Don't move past the beginning or end of the list
+        if j < 0:
             return
 
-def RemoveLayer( layer_name ):
-    _SELECTED_LAYERS.pop( _SELECTED_LAYERS.index( layer_name ) )
-    _NotifyViews()
+        if j >= len( self._selected_layers ):
+            return
 
-def MoveLayerUp( layer_name ):
-    _MoveLayer( layer_name, -1 )
+        self._selected_layers[i], self._selected_layers[j] = self._selected_layers[j], self._selected_layers[i]
 
-def MoveLayerDown( layer_name ):
-    _MoveLayer( layer_name, 1 )
+        self._update_sprites()
+        self._notify_views()
 
-def _MoveLayer( layer_name, direction ):
-    # Get our two indices to swap
-    i = _SELECTED_LAYERS.index( layer_name )
-    j = i + direction
+    def SelectSheet( self, layer_name, sheet_name ):
+        self._selected_sheets[layer_name] = spec_manager.GetSheet( self._selected_type.group_name, layer_name, sheet_name )
+        self._update_sprites()
+        self._notify_views()
 
-    # Don't move past the beginning or end of the list
-    if j < 0:
-        return
+    def _update_sprites( self ):
+        self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )
 
-    if j >= len( _SELECTED_LAYERS ):
-        return
+        # For each action in the selected type,
+        for action in self._selected_type.actions:
+            # For each direction in the action,
+            for direction in self._selected_type.directions:
+                # For each frame:
+                for frame in range( 0, action["frames"] ):
+                    print "Creating frame: %s action: %s direction: %s" % ( frame, action["name"], direction )
+                    # Make a new Image to store the sprite frame
+                    sprite = Image.new( "RGBA", ( self._selected_type.tile_width, self._selected_type.tile_height ) )
 
-    _SELECTED_LAYERS[i], _SELECTED_LAYERS[j] = _SELECTED_LAYERS[j], _SELECTED_LAYERS[i]
+                    # For each selected layer:
+                    for layer in self._selected_layers:
+                        selected_sheet = self._selected_sheets[layer]
+                        if selected_sheet is None:
+                            continue
+                        # Load the raw spritesheet image
+                        image_name = selected_sheet.file_path
+                        print "Adding image: %s for layer: %s" % ( image_name, layer )
+                        path = "assets/%s/%s" % ( self._selected_type.group_name, image_name )
+                        raw_sheet = Image.open( path )
 
-    _NotifyViews()
+                        # Composite the layer sprite onto the frame image
 
-# Ensure the spec manager actually has specs for us
-spec_manager.LoadSpecs()
+                        # Pull out the Xth x Yth frame to display
+                        left = selected_sheet.actions[action["name"]].directions[direction].frames[frame][0] * self._selected_type.tile_width
+                        top = selected_sheet.actions[action["name"]].directions[direction].frames[frame][1] * self._selected_type.tile_height
+                        right = left + self._selected_type.tile_width - 1
+                        bottom = top + self._selected_type.tile_height - 1
+                        cropped_image = raw_sheet.crop( ( left, top, right, bottom ) )
+                        sprite.paste( cropped_image, ( 0, 0, self._selected_type.tile_width - 1, self._selected_type.tile_height - 1 ), cropped_image )
+
+                    # Add it to the collection of sprites
+                    self._sprites[action["name"]][direction].append( sprite )
+
+    def GetSprites( self, action, direction ):
+        return self._sprites[action][direction]
+
+    def GetAnimationSpeed( self ):
+        return self._animation_speed
+
+    def GetSelectedType( self ):
+        return self._selected_type
+
+# Instantiate the external-facing instance
+COMPOSITOR = _Compositor()

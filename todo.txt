@@ -2,5 +2,6 @@
 * Unit tests
 * Proper logging
 * Validation for edge cases (missing / bad .spec files, missing directories, etc.)
-
-****** Something in the topology inside spec_manager is still wrong.  Rethink the topology from the ground up, then re-implement.
+* Permit spec files to refer to images inside of subdirectories in a platform-independent way (use '/'s for path separator, then regex them out for os.sep)
+* Permit sheet spec files to include an offset into the image for the grid
+* Permit sheet spec files to include absolute image coordinates, instead of the implied grid

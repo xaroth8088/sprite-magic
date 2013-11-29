@@ -8,6 +8,7 @@ class SpriteSheet():
         if "file_path" not in data:
             raise "file_path element missing in layer.  Unable to load .spec file if we don't know which sheet you mean"
 
+        self.file_path = data.get( "file_path" )
         self.group_name = group_name
         self.name = data.get( "name", "Unnamed Layer" )
         self.layer = data.get( "layer", "Unspecified Layer" )
