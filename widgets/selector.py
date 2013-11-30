@@ -1,16 +1,19 @@
 """ The pane that handles selecting a type and layers
 """
 
-import Tkinter as tk
+from Tkinter import *
+from ttk import *
+
 
 from widgets.type_selector import TypeSelector
 from widgets.sheet_selector import SheetSelector
 from widgets.add_layer import add_layer
+from widgets.animation_speed import AnimationSpeed
 from models.compositor import COMPOSITOR
 
-class Selector( tk.Frame ):
+class Selector( Frame ):
     def __init__( self, master ):
-        tk.Frame.__init__( self, master )
+        Frame.__init__( self, master )
 
         self.sheet_selectors = {}
 
@@ -64,8 +67,11 @@ class Selector( tk.Frame ):
         self.type_selector = TypeSelector( self )
         self.type_selector.grid( row = 0, column = 0 )
 
-        self.sheet_selectors_frame = tk.Frame( self )
-        self.sheet_selectors_frame.grid( row = 1, column = 0 )
+        speed_control = AnimationSpeed( self )
+        speed_control.grid( row = 1, column = 0 )
+
+        self.sheet_selectors_frame = Frame( self )
+        self.sheet_selectors_frame.grid( row = 2, column = 0 )
 
         self._add_layer = add_layer( self )
-        self._add_layer.grid( row = len( self.sheet_selectors ) + 2 )
+        self._add_layer.grid( row = len( self.sheet_selectors ) + 3 )

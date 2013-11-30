@@ -1,13 +1,15 @@
 """ A widget to select a sheet to use for a given layer.
 """
 
-import Tkinter as tk
+from Tkinter import *
+from ttk import *
+
 
 from models.compositor import COMPOSITOR
 
-class SheetSelector( tk.Frame ):
+class SheetSelector( Frame ):
     def __init__( self, master, layer_name ):
-        tk.Frame.__init__( self, master )
+        Frame.__init__( self, master )
         self.layer_name = layer_name
         self._setup_title()
         self._setup_order_buttons()
@@ -15,28 +17,28 @@ class SheetSelector( tk.Frame ):
         self._setup_destroy_button()
 
     def _setup_title( self ):
-        title = tk.Label( self, text = self.layer_name )
+        title = Label( self, text = self.layer_name )
         title.grid( row = 0, column = 0 )
 
     def _setup_order_buttons( self ):
-        button = tk.Button( self, command = self._on_up_pressed, text = "Up" )
+        button = Button( self, command = self._on_up_pressed, text = "Up" )
         button.grid( row = 1, column = 0 )
 
-        button = tk.Button( self, command = self._on_down_pressed, text = "Down" )
+        button = Button( self, command = self._on_down_pressed, text = "Down" )
         button.grid( row = 1, column = 1 )
 
     def _setup_optionmenu( self ):
         layers = COMPOSITOR.get_sheets_by_layer( self.layer_name ).keys()
 
-        self.variable = tk.StringVar( self )
+        self.variable = StringVar( self )
         self.variable.set( layers[0] )
+
+        layer_menu = OptionMenu( self, self.variable, *layers )
+        layer_menu.grid( row = 1, column = 2 )
         self.variable.trace( 'w', self._on_layer_selection_changed )
 
-        layer_menu = tk.OptionMenu( self, self.variable, *layers )
-        layer_menu.grid( row = 1, column = 2 )
-
     def _setup_destroy_button( self ):
-        button = tk.Button( self, text = "X", command = self._on_destroy_button_pressed )
+        button = Button( self, text = "X", command = self._on_destroy_button_pressed )
         button.grid( row = 1, column = 3 )
 
     def _on_layer_selection_changed( self, name, index, mode ):

@@ -1,15 +1,17 @@
 """ The controlling window for the application.
 Serves as the hub for all other widgets.
 """
-import Tkinter as tk
+from Tkinter import *
+from ttk import *
+
 
 from widgets.licensing import Licensing
 from widgets.preview import Preview
 from widgets.selector import Selector
 
-class MainWindow( tk.Tk ):
+class MainWindow( Tk ):
     def __init__( self ):
-        tk.Tk.__init__( self )
+        Tk.__init__( self )
 
         # Set up the menu window
         self.title( "Sprite Magic" )
@@ -26,10 +28,10 @@ class MainWindow( tk.Tk ):
         self.setupMainWindow()
 
     def setupMenuBar( self ):
-        menubar = tk.Menu( self )
+        menubar = Menu( self )
 
         # File
-        filemenu = tk.Menu( menubar, tearoff = 0 )
+        filemenu = Menu( menubar, tearoff = 0 )
 
         filemenu.add_command( label = "Quit", accelerator = 'Ctrl+Q', command = self.quit, underline = 0 )
         self.bind_all( "<Control-q>", self.exit )
@@ -37,7 +39,7 @@ class MainWindow( tk.Tk ):
         menubar.add_cascade( label = "File", menu = filemenu )
 
         # View
-        viewmenu = tk.Menu( menubar, tearoff = 0 )
+        viewmenu = Menu( menubar, tearoff = 0 )
         viewmenu.add_command( label = "Preview", command = self.showPreview )
         viewmenu.add_command( label = "Licensing", command = self.showLicensing )
 
@@ -51,7 +53,7 @@ class MainWindow( tk.Tk ):
         self.selector.grid()
 
     def showPreview( self ):
-        window = tk.Toplevel( self )
+        window = Toplevel( self )
         window.geometry( '400x400-40+40' )
         window.transient( self )
         window.title( "Preview" )
@@ -59,7 +61,7 @@ class MainWindow( tk.Tk ):
         self.preview_window.grid()
 
     def showLicensing( self ):
-        window = tk.Toplevel( self )
+        window = Toplevel( self )
         window.geometry( "640x400+40-40" )
         window.transient( self )
         window.title( "License Information" )

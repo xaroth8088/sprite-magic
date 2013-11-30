@@ -3,15 +3,19 @@
 
 from collections import defaultdict
 from PIL import Image
+from math import floor
 
 import spec_manager
 from models.image_manager import IMAGE_MANAGER
 
 class _Compositor():
+    MIN_SPEED = 10
+    MAX_SPEED = 500
+
     def __init__( self ):
         self._selected_type = None  # Which sprite type has the user selected?
         self._selected_layers = []  # The layers that the user is actively looking at, in order
-        self._animation_speed = 60  # Number of milliseconds between frames
+        self._animation_speed = ( int )( floor( ( self.MAX_SPEED + self.MIN_SPEED ) / 2 ) )  # Number of milliseconds between frames
         self._registered_views = []  # Which views want to know when we update?
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )  # PIL Image objects for each action and direction
         self._selected_sheets = {}  # The sprite_sheet objects that are presently active

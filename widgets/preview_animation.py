@@ -1,14 +1,15 @@
 """ Shows an animated preview of a sprite with a given action and direction.
 """
 
-import Tkinter as tk
+from Tkinter import *
+from ttk import *
 from PIL import Image, ImageTk
 
 from models.compositor import COMPOSITOR
 
-class PreviewAnimation( tk.Frame ):
+class PreviewAnimation( Frame ):
     def __init__( self, master, sprites ):
-        tk.Frame.__init__( self, master )
+        Frame.__init__( self, master )
 
         self.frame_counter = 0
         self.sprites = []
@@ -29,9 +30,16 @@ class PreviewAnimation( tk.Frame ):
     def _advance_frame( self ):
         self.frame_counter = self.frame_counter + 1
         self._draw_frame()
+
+        self.frame_label.configure( text = "Frame: %s" % ( self.frame_counter % len( self.sprites ) ) )
+
         self.after( COMPOSITOR.get_animation_speed(), self._advance_frame )  # Animate!
 
     def _setup_view( self ):
-        self.label = tk.Label( self )
+        self.label = Label( self )
         self.label.grid()
+
+        self.frame_label = Label( self, text = "Frame:" )
+        self.frame_label.grid()
+
         self._draw_frame()
