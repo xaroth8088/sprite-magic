@@ -21,3 +21,5 @@ Want to know more?
 A word about licensing...
 -------------
 The GPLv3 only applies to the code for this project itself.  Free artwork provided on this project has a variety of licenses and attribution requirements, including: CC0 public domain, GPL, Creative Commons, and others.  Please check the individual art directories for licensing and attribution.
+
+A special thanks to Matthew Krohn for putting together the [Universal LPC Spritesheet](https://github.com/makrohn/Universal-LPC-spritesheet), which comprises the largest corpus of initial artwork used here.
