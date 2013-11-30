@@ -14,5 +14,24 @@ class PreviewWindow( Toplevel ):
         self.transient( master )
         self.title( "Preview" )
 
-        self.preview_window = Preview( self )
-        self.preview_window.grid()
+        self._setup_view()
+
+    def _setup_view( self ):
+        self.canvas = Canvas( self, borderwidth = 0 )
+        self.frame = Frame( self.canvas )
+        self.vsb = Scrollbar( self, orient = "vertical", command = self.canvas.yview )
+        self.canvas.configure( yscrollcommand = self.vsb.set )
+
+        self.vsb.pack( side = "right", fill = "y" )
+        self.canvas.pack( side = "left", fill = BOTH, expand = True )
+        self.canvas.create_window( ( 0, 0 ), window = self.frame, anchor = "nw",
+                                  tags = "self.frame" )
+
+        self.frame.bind( "<Configure>", self._on_window_resize )
+
+        self.preview_window = Preview( self.frame )
+        self.preview_window.pack( fill = BOTH, expand = True )
+
+    def _on_window_resize( self, event ):
+        '''Reset the scroll region to encompass the inner frame'''
+        self.canvas.configure( scrollregion = self.canvas.bbox( "all" ) )

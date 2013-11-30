@@ -7,8 +7,6 @@ Created on Nov 24, 2013
 from Tkinter import *
 from ttk import *
 
-
-
 from widgets.preview_action import PreviewAction
 from models.compositor import COMPOSITOR
 

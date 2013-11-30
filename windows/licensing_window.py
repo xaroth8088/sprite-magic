@@ -14,4 +14,4 @@ class LicensingWindow( Toplevel ):
         self.title( "License Information" )
 
         self.licensing_window = Licensing( self )
-        self.licensing_window.grid()
+        self.licensing_window.pack( fill = BOTH, expand = True )

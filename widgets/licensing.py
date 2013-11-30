@@ -20,6 +20,7 @@ class Licensing( Frame ):
     def _setup_view( self ):
         label = Label( self, text = "Licensing and Attribution Information" )
         label.grid()
+
         self.license_box = ScrolledText( self )
         self.license_box.grid()
 

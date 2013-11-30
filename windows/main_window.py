@@ -50,7 +50,7 @@ class MainWindow( Tk ):
 
     def setupMainWindow( self ):
         self.selector = Selector( self )
-        self.selector.grid()
+        self.selector.pack( fill = BOTH, expand = True )
 
     def showPreview( self ):
         self.preview_window = PreviewWindow( self )
