@@ -2,7 +2,9 @@ sprite-magic
 ============
 A tool for making and sharing game-ready spritesheets.  Comes with a library of free sprites!
 
-_This project is in its infancy, and has nothing to actually play with yet.  Please check back later!_
+This project is in its infancy, but there's now something to tinker with if you're a developer.  The project currently requires Python 2.7 and the PIL installed to run.  New features, bugfixes, documentation, and art + spec contributions are welcome!
+
+If you're just looking to get down to business and have an easy-to-use program, be sure to check back later once the dust has settled a bit.
 
 What is this?
 -------------
@@ -12,9 +14,9 @@ Sprite Magic has two purposes:
 
 As a bonus, Sprite Magic can easily be used by artists to help preview animations when creating sprites.
 
-How can I contribute?
--------------
-Sprite Magic needs your art!  Instructions for how to contribute will come soon, after some of the basics of the program are in place.  We'll need the art in .png format with a transparent background, and a specially-formatted file to let the program know which frames go where.
+Want to know more?
+------------------
+[Check out the wiki for more details.](https://github.com/xaroth8088/sprite-magic/wiki)
 
 A word about licensing...
 -------------
