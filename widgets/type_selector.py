@@ -12,7 +12,7 @@ from models.compositor import COMPOSITOR
 class TypeSelector( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
-        COMPOSITOR.RegisterView( self )
+        COMPOSITOR.register_view( self )
 
         self._setup_view()
         self.on_model_updated()
@@ -35,7 +35,7 @@ class TypeSelector( tk.Frame ):
 
     def _on_type_selection_changed( self, name, index, mode ):
         print "Setting type to: %s" % self.variable.get()
-        COMPOSITOR.SetSelectedType( self.variable.get() )
+        COMPOSITOR.set_selected_type( self.variable.get() )
 
     def on_model_updated( self ):
         # TODO: The compositor changed state, so make sure we're up to date, too.

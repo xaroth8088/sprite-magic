@@ -5,7 +5,7 @@ import Tkinter as tk
 
 from widgets.type_selector import TypeSelector
 from widgets.sheet_selector import SheetSelector
-from widgets.add_layer import AddLayer
+from widgets.add_layer import add_layer
 from models.compositor import COMPOSITOR
 
 class Selector( tk.Frame ):
@@ -17,7 +17,7 @@ class Selector( tk.Frame ):
         self._setup_controls()
 
         # Register for changes on the compositor
-        COMPOSITOR.RegisterView( self )
+        COMPOSITOR.register_view( self )
 
         self.on_model_updated()
 
@@ -26,7 +26,7 @@ class Selector( tk.Frame ):
         self._reorder_sheet_selectors()
 
     def _reorder_sheet_selectors( self ):
-        selected_layers = COMPOSITOR.GetSelectedLayers()
+        selected_layers = COMPOSITOR.get_selected_layers()
 
         # For each of our layers,
         layers_to_remove = []
@@ -67,5 +67,5 @@ class Selector( tk.Frame ):
         self.sheet_selectors_frame = tk.Frame( self )
         self.sheet_selectors_frame.grid( row = 1, column = 0 )
 
-        self._add_layer = AddLayer( self )
+        self._add_layer = add_layer( self )
         self._add_layer.grid( row = len( self.sheet_selectors ) + 2 )

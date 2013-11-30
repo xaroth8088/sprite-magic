@@ -8,7 +8,7 @@ import Tkinter as tk
 
 from models.compositor import COMPOSITOR
 
-class AddLayer( tk.Frame ):
+class add_layer( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
         self._setup_button()
@@ -18,4 +18,4 @@ class AddLayer( tk.Frame ):
         button.pack()
 
     def _on_add_pressed( self ):
-        COMPOSITOR.AddLayer()
+        COMPOSITOR.add_layer()

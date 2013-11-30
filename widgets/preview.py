@@ -13,12 +13,12 @@ from models.compositor import COMPOSITOR
 class Preview( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
-        COMPOSITOR.RegisterView( self )
+        COMPOSITOR.register_view( self )
         self._setup_view()
         self.on_model_updated()
 
     def _setup_view( self ):
-        selected_type = COMPOSITOR.GetSelectedType()
+        selected_type = COMPOSITOR.get_selected_type()
         if selected_type is None:
             temp = tk.Label( self, text = "No type selected" )
             temp.grid()

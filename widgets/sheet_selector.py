@@ -26,7 +26,7 @@ class SheetSelector( tk.Frame ):
         button.grid( row = 1, column = 1 )
 
     def _setup_optionmenu( self ):
-        layers = COMPOSITOR.GetSheetsByLayer( self.layer_name ).keys()
+        layers = COMPOSITOR.get_sheets_by_layer( self.layer_name ).keys()
 
         self.variable = tk.StringVar( self )
         self.variable.set( layers[0] )
@@ -41,14 +41,14 @@ class SheetSelector( tk.Frame ):
 
     def _on_layer_selection_changed( self, name, index, mode ):
         print "Layer selection: %s" % self.variable.get()
-        COMPOSITOR.SelectSheet( self.layer_name, self.variable.get() )
+        COMPOSITOR.select_sheet( self.layer_name, self.variable.get() )
 
     def _on_up_pressed( self ):
-        COMPOSITOR.MoveLayerUp( self.layer_name )
+        COMPOSITOR.move_layer_up( self.layer_name )
 
     def _on_down_pressed( self ):
-        COMPOSITOR.MoveLayerDown( self.layer_name )
+        COMPOSITOR.move_layer_down( self.layer_name )
 
     def _on_destroy_button_pressed( self ):
         print "Removing layer: %s" % self.layer_name
-        COMPOSITOR.RemoveLayer( self.layer_name )
+        COMPOSITOR.remove_layer( self.layer_name )

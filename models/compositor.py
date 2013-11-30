@@ -20,57 +20,57 @@ class _Compositor():
         # Ensure the spec manager actually has specs for us
         spec_manager.LoadSpecs()
 
-    def RegisterView( self, view ):
+    def register_view( self, view ):
         self._registered_views.append( view )
 
-    def DeregisterView( self, view ):
+    def deregister_view( self, view ):
         self._registered_views.remove( view )
 
     def _notify_views( self ):
         for view in self._registered_views:
             view.on_model_updated()
 
-    def SetSelectedType( self, sprite_type_name ):
+    def set_selected_type( self, sprite_type_name ):
         self._selected_sheets = {}
         self._selected_layers = []
         self._selected_type = spec_manager.GetTypeByName( sprite_type_name )
         self._update_sprites()
         self._notify_views()
 
-    def GetSheetsByLayer( self, layer_name ):
+    def get_sheets_by_layer( self, layer_name ):
         layers = spec_manager.GetGroupSheetsByLayer( self._selected_type.group_name, layer_name )
         return layers
 
-    def GetAvailableLayers( self ):
+    def get_available_layers( self ):
         return spec_manager.GetGroupLayers( self._selected_type.group_name )
 
-    def GetSelectedLayers( self ):
+    def get_selected_layers( self ):
         return self._selected_layers
 
-    def AddLayer( self ):
+    def add_layer( self ):
         # Add the next available layer from the spec_manager that we don't already have
         all_layers = spec_manager.GetGroupLayers( self._selected_type.group_name )
         for layer in all_layers:
             if layer not in self._selected_layers:
                 # Add the selected layer and pick a default selected sheet for that layer
                 self._selected_layers.append( layer )
-                sheets = self.GetSheetsByLayer( layer ).keys()
+                sheets = self.get_sheets_by_layer( layer ).keys()
                 self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheets[0] )
 
                 self._update_sprites()
                 self._notify_views()
                 return
 
-    def RemoveLayer( self, layer_name ):
+    def remove_layer( self, layer_name ):
         self._selected_layers.pop( self._selected_layers.index( layer_name ) )
         self._selected_sheets.pop( layer_name )
         self._update_sprites()
         self._notify_views()
 
-    def MoveLayerUp( self, layer_name ):
+    def move_layer_up( self, layer_name ):
         self._move_layer( layer_name, -1 )
 
-    def MoveLayerDown( self, layer_name ):
+    def move_layer_down( self, layer_name ):
         self._move_layer( layer_name, 1 )
 
     def _move_layer( self, layer_name, direction ):
@@ -90,7 +90,7 @@ class _Compositor():
         self._update_sprites()
         self._notify_views()
 
-    def SelectSheet( self, layer_name, sheet_name ):
+    def select_sheet( self, layer_name, sheet_name ):
         self._selected_sheets[layer_name] = spec_manager.GetSheet( self._selected_type.group_name, layer_name, sheet_name )
         self._update_sprites()
         self._notify_views()
@@ -130,16 +130,19 @@ class _Compositor():
                     # Add it to the collection of sprites
                     self._sprites[action["name"]][direction].append( sprite )
 
-    def GetSprites( self, action, direction ):
+    def get_sprites( self, action, direction ):
         return self._sprites[action][direction]
 
-    def GetAnimationSpeed( self ):
+    def get_animation_speed( self ):
         return self._animation_speed
 
-    def GetSelectedType( self ):
+    def set_animation_speed( self, speed ):
+        self._animation_speed = speed
+
+    def get_selected_type( self ):
         return self._selected_type
 
-    def GetSelectedSheets( self ):
+    def get_selected_sheets( self ):
         return self._selected_sheets
 
 # Instantiate the external-facing instance

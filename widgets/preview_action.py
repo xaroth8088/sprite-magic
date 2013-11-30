@@ -13,7 +13,7 @@ class PreviewAction( tk.Frame ):
         self._setup_view()
 
     def _setup_view( self ):
-        selected_type = COMPOSITOR.GetSelectedType()
+        selected_type = COMPOSITOR.get_selected_type()
         if selected_type is None:
             temp = tk.Label( self, text = "No type selected" )
             temp.grid()
@@ -27,7 +27,7 @@ class PreviewAction( tk.Frame ):
             label = tk.Label( self, text = direction )
             label.grid( row = 1, column = column )
 
-            anim = PreviewAnimation( self, COMPOSITOR.GetSprites( self.action["name"], direction ) )
+            anim = PreviewAnimation( self, COMPOSITOR.get_sprites( self.action["name"], direction ) )
             anim.grid( row = 2, column = column )
 
             column = column + 1

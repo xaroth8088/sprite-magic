@@ -29,7 +29,7 @@ class PreviewAnimation( tk.Frame ):
     def _advance_frame( self ):
         self.frame_counter = self.frame_counter + 1
         self._draw_frame()
-        self.after( COMPOSITOR.GetAnimationSpeed(), self._advance_frame )  # Animate!
+        self.after( COMPOSITOR.get_animation_speed(), self._advance_frame )  # Animate!
 
     def _setup_view( self ):
         self.label = tk.Label( self )

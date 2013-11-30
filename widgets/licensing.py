@@ -11,7 +11,7 @@ from models.compositor import COMPOSITOR
 class Licensing( tk.Frame ):
     def __init__( self, master ):
         tk.Frame.__init__( self, master )
-        COMPOSITOR.RegisterView( self )
+        COMPOSITOR.register_view( self )
         self._setup_view()
         self.on_model_updated()
 
@@ -26,7 +26,7 @@ class Licensing( tk.Frame ):
         self.license_box.configure( state = tk.NORMAL )
         self.license_box.delete( 1.0, tk.END )
         license_texts = {}
-        sheets = COMPOSITOR.GetSelectedSheets()
+        sheets = COMPOSITOR.get_selected_sheets()
         for sheet in sheets.values():
             license_texts["'%s' by %s ( %s ).  Used under license (%s)." % ( sheet.name, sheet.credit_name, sheet.credit_url, sheet.license )] = True
         self.license_box.insert( tk.END, "\n".join( license_texts.keys() ) )
