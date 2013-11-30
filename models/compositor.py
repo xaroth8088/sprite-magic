@@ -5,6 +5,7 @@ from collections import defaultdict
 from PIL import Image
 
 import spec_manager
+from models.image_manager import IMAGE_MANAGER
 
 class _Compositor():
     def __init__( self ):
@@ -114,7 +115,7 @@ class _Compositor():
                         # Load the raw spritesheet image
                         image_name = selected_sheet.file_path
                         path = "assets/%s/%s" % ( self._selected_type.group_name, image_name )
-                        raw_sheet = Image.open( path )
+                        raw_sheet = IMAGE_MANAGER.get_image( path )
 
                         # Composite the layer sprite onto the frame image
 
