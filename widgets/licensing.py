@@ -6,7 +6,7 @@ Created on Nov 24, 2013
 
 from Tkinter import *
 from ttk import *
-
+from ScrolledText import ScrolledText
 
 from models.compositor import COMPOSITOR
 
@@ -20,18 +20,16 @@ class Licensing( Frame ):
     def _setup_view( self ):
         label = Label( self, text = "Licensing and Attribution Information" )
         label.grid()
-        self.license_box = Text( self, state = DISABLED )
+        self.license_box = ScrolledText( self )
         self.license_box.grid()
 
     def on_model_updated( self ):
         # The compositor changed state, so make sure we're up to date, too.
-        self.license_box.configure( state = NORMAL )
         self.license_box.delete( 1.0, END )
         license_texts = {}
         sheets = COMPOSITOR.get_selected_sheets()
         for sheet in sheets.values():
             license_texts["'%s' by %s ( %s ).  Used under license (%s)." % ( sheet.name, sheet.credit_name, sheet.credit_url, sheet.license )] = True
         self.license_box.insert( END, "\n".join( license_texts.keys() ) )
-        self.license_box.configure( state = DISABLED )
 
 # TODO: Hook window close and deregister with the compositor

@@ -4,10 +4,10 @@ Serves as the hub for all other widgets.
 from Tkinter import *
 from ttk import *
 
-
-from widgets.licensing import Licensing
-from widgets.preview import Preview
 from widgets.selector import Selector
+
+from windows.preview_window import PreviewWindow
+from windows.licensing_window import LicensingWindow
 
 class MainWindow( Tk ):
     def __init__( self ):
@@ -53,20 +53,10 @@ class MainWindow( Tk ):
         self.selector.grid()
 
     def showPreview( self ):
-        window = Toplevel( self )
-        window.geometry( '400x400-40+40' )
-        window.transient( self )
-        window.title( "Preview" )
-        self.preview_window = Preview( window )
-        self.preview_window.grid()
+        self.preview_window = PreviewWindow( self )
 
     def showLicensing( self ):
-        window = Toplevel( self )
-        window.geometry( "640x400+40-40" )
-        window.transient( self )
-        window.title( "License Information" )
-        self.licensing_window = Licensing( window )
-        self.licensing_window.grid()
+        self.licensing_window = LicensingWindow( self )
 
     def exit( self, event ):
         self.quit()
