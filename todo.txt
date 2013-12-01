@@ -1,3 +1,4 @@
+* Export sheets in a variety of ways
 * A wizard to help create .spec files
 * Unit tests
 * Proper logging

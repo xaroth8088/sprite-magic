@@ -37,7 +37,6 @@ class TypeSelector( Frame ):
         self.variable.set( types[0] )  # default value
 
     def _on_type_selection_changed( self, name, index, mode ):
-        print "Setting type to: %s" % self.variable.get()
         COMPOSITOR.set_selected_type( self.variable.get() )
 
     def on_model_updated( self ):

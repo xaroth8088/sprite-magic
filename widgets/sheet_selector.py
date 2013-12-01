@@ -42,7 +42,6 @@ class SheetSelector( Frame ):
         button.grid( row = 1, column = 3 )
 
     def _on_layer_selection_changed( self, name, index, mode ):
-        print "Layer selection: %s" % self.variable.get()
         COMPOSITOR.select_sheet( self.layer_name, self.variable.get() )
 
     def _on_up_pressed( self ):
@@ -52,5 +51,4 @@ class SheetSelector( Frame ):
         COMPOSITOR.move_layer_down( self.layer_name )
 
     def _on_destroy_button_pressed( self ):
-        print "Removing layer: %s" % self.layer_name
         COMPOSITOR.remove_layer( self.layer_name )

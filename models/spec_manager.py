@@ -44,13 +44,11 @@ def _LoadSpec( filename ):
     # If sheets are present, create SpriteSheet objects and organize them into layers
     if "sheets" in data:
         for sheet_data in data["sheets"]:
-            print "Loading sheet spec: ", filename
             sprite_sheet = SpriteSheet( sheet_data, group_name )
             _SHEETS[group_name][sprite_sheet.layer][sprite_sheet.name] = sprite_sheet
 
     # If a type is enclosed, create a new SpriteType object with that data
     if "type" in data:
-        print "Loading type spec: ", filename
         sprite_type = SpriteType( data["type"], group_name )
         _TYPES[sprite_type.name] = sprite_type
 
