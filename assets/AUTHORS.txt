@@ -67,7 +67,8 @@ Oversized male rapier
 
 
 Marcel van de Steeg
-
+         "credit_name":"Marcel van de Steeg, et al.",
+         "credit_url":"http://opengameart.org/users/madmarcel",
 -------------------
 bracelet
 orceyepatch
@@ -141,7 +142,8 @@ wings
 robe
 
 Lanea Zimmerman (AKA Sharm)
-
+         "credit_name":"Lanea Zimmerman, et al.",
+         "credit_url":"http://opengameart.org/users/sharm",
 ---------------------------
 overskirt
 blue vest
@@ -205,7 +207,8 @@ bunches (based on unkempt)
 
 
 JRConway3
-
+         "credit_name":"David Conway, Jr., et al.",
+         "credit_url":"https://github.com/jrconway3/Universal-LPC-spritesheet",
 ---------
 Curly Shoulder Hair (female)
 Female cloth bracers
