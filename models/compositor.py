@@ -4,6 +4,7 @@
 from collections import defaultdict
 from PIL import Image
 from math import floor
+import tkFileDialog
 
 import spec_manager
 from models.image_manager import IMAGE_MANAGER
@@ -126,10 +127,10 @@ class _Compositor():
                         # Pull out the Xth x Yth frame to display
                         left = selected_sheet.actions[action["name"]].directions[direction].frames[frame][0] * self._selected_type.tile_width
                         top = selected_sheet.actions[action["name"]].directions[direction].frames[frame][1] * self._selected_type.tile_height
-                        right = left + self._selected_type.tile_width - 1
-                        bottom = top + self._selected_type.tile_height - 1
+                        right = left + self._selected_type.tile_width
+                        bottom = top + self._selected_type.tile_height
                         cropped_image = raw_sheet.crop( ( left, top, right, bottom ) )
-                        sprite.paste( cropped_image, ( 0, 0, self._selected_type.tile_width - 1, self._selected_type.tile_height - 1 ), cropped_image )
+                        sprite.paste( cropped_image, ( 0, 0, self._selected_type.tile_width, self._selected_type.tile_height ), cropped_image )
 
                     # Add it to the collection of sprites
                     self._sprites[action["name"]][direction].append( sprite )
@@ -148,6 +149,57 @@ class _Compositor():
 
     def get_selected_sheets( self ):
         return self._selected_sheets
+
+    def export_combined_sheet( self ):
+        # Prompt for save file location
+        file_path = self._get_save_location()
+        if not file_path:
+            return
+
+        # Determine the best size for the sheet
+        # Create the Image to hold the sprites
+        export_sheet = self._create_export_sheet()
+
+        # Format: Each action+direction will be one row, each frame one column
+        row = 0
+        column = 0
+        sprite_width = self._selected_type.tile_width
+        sprite_height = self._selected_type.tile_height
+
+        # For each action,
+        for action in self._selected_type.actions:
+            # For each direction,
+            for direction in self._selected_type.directions:
+                # Get the sprites for this action + direction
+                sprites = self.get_sprites( action["name"], direction )
+
+                # For each sprite,
+                for sprite in sprites:
+                    # Add the layer to the Image for that frame
+                    export_sheet.paste( sprite, ( column * sprite_width, row * sprite_height, ( column + 1 ) * sprite_width, ( row + 1 ) * sprite_height ) )
+                    column = column + 1
+                # Next row
+                row = row + 1
+                column = 0
+        # Export the file
+        export_sheet.save( file_path, "PNG" )
+
+    def _create_export_sheet( self ):
+        # Format: Each action+direction will be one row, each frame one column
+        width = self._selected_type.tile_width * self._selected_type.get_longest_action_length()
+        height = self._selected_type.tile_height * self._selected_type.get_number_of_actions() * self._selected_type.get_number_of_directions()
+
+        sheet = Image.new( 'RGBA', ( width, height ) )
+        return sheet
+
+    def _get_save_location( self ):
+        options = {}
+        options['defaultextension'] = '.png'
+        options['filetypes'] = [( 'PNG files', '.png' )]
+        options['initialfile'] = 'exported_spritesheet.png'
+        options['title'] = 'This is a title'
+
+        return tkFileDialog.asksaveasfilename( **options )
 
 # Instantiate the external-facing instance
 COMPOSITOR = _Compositor()

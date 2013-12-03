@@ -9,6 +9,8 @@ from widgets.selector import Selector
 from windows.preview_window import PreviewWindow
 from windows.licensing_window import LicensingWindow
 
+from models.compositor import COMPOSITOR
+
 class MainWindow( Tk ):
     def __init__( self ):
         Tk.__init__( self )
@@ -33,6 +35,9 @@ class MainWindow( Tk ):
         # File
         filemenu = Menu( menubar, tearoff = 0 )
 
+        filemenu.add_command( label = "Export combined sheet", accelerator = 'Ctrl+S', command = self._on_export_combined )
+        self.bind_all( "<Control-s>", lambda arg: self._on_export_combined() )
+        filemenu.add_separator()
         filemenu.add_command( label = "Quit", accelerator = 'Ctrl+Q', command = self.quit, underline = 0 )
         self.bind_all( "<Control-q>", self.exit )
 
@@ -47,6 +52,9 @@ class MainWindow( Tk ):
 
         # Make it active
         self.config( menu = menubar )
+
+    def _on_export_combined( self ):
+        COMPOSITOR.export_combined_sheet()
 
     def setupMainWindow( self ):
         self.selector = Selector( self )

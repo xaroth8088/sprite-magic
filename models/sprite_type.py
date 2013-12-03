@@ -22,3 +22,19 @@ class SpriteType():
             action["name"] = raw_action.get( "name", "Unnamed Action" )
             action["frames"] = raw_action.get( "frames", 1 )
             self.actions.append( action )
+
+    def get_longest_action_length( self ):
+        """ Gets the length of the longest action, as measured in number of frames.
+        """
+        max_len = 0
+        for action in self.actions:
+            if action["frames"] > max_len:
+                max_len = action["frames"]
+
+        return max_len
+
+    def get_number_of_actions( self ):
+        return len( self.actions )
+
+    def get_number_of_directions( self ):
+        return len( self.directions )
