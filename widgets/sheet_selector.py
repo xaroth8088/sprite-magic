@@ -29,9 +29,10 @@ class SheetSelector( Frame ):
 
     def _setup_optionmenu( self ):
         layers = COMPOSITOR.get_sheets_by_layer( self.layer_name ).keys()
+        layers.insert( 0, "" )  # Need a blank entry at the head, otherwise ttk.OptionMenu will cause the first entry to disappear
 
         self.variable = StringVar( self )
-        self.variable.set( layers[0] )
+        self.variable.set( layers[1] )
 
         layer_menu = OptionMenu( self, self.variable, *layers )
         layer_menu.grid( row = 1, column = 2 )

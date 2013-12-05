@@ -30,11 +30,13 @@ class TypeSelector( Frame ):
         types = [data.name for data in types.values()]
         self.variable = StringVar( self )
 
+        types.insert( 0, "" )  # Need a blank entry at the head, otherwise ttk.OptionMenu will cause the first entry to disappear
+
         type_menu = OptionMenu( self, self.variable, *types )
         type_menu.grid()
 
         self.variable.trace( 'w', self._on_type_selection_changed )
-        self.variable.set( types[0] )  # default value
+        self.variable.set( types[1] )  # default value
 
     def _on_type_selection_changed( self, name, index, mode ):
         COMPOSITOR.set_selected_type( self.variable.get() )

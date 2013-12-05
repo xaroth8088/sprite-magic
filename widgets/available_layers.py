@@ -12,6 +12,8 @@ class AvailableLayers( Frame ):
         COMPOSITOR.register_view( self )
 
     def _setup_view( self ):
+        button = Button( self, command = self._on_button_pressed, text = "Add Layer" )
+        button.pack( side = BOTTOM )
         scrollbar = Scrollbar( self, orient = VERTICAL )
         self.listbox = Listbox( self, yscrollcommand = scrollbar.set )
         scrollbar.config( command = self.listbox.yview )
@@ -23,6 +25,9 @@ class AvailableLayers( Frame ):
         for layer in COMPOSITOR.get_available_layers():
             if layer not in selected_layers:
                 self.listbox.insert( END, layer )
+
+    def _on_button_pressed( self ):
+        COMPOSITOR.add_layer( self.listbox.selection_get() )
 
     def on_model_updated( self ):
         # The compositor changed state, so make sure we're up to date, too.
