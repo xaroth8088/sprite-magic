@@ -17,7 +17,7 @@ class MainWindow( Tk ):
 
         # Set up the menu window
         self.title( "Sprite Magic" )
-        self.geometry( '400x400+40+40' )
+        self.geometry( '800x800+40+40' )
 
         # Menu bar for the main window
         self.setupMenuBar()

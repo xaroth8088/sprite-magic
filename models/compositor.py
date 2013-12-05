@@ -47,24 +47,21 @@ class _Compositor():
         return layers
 
     def get_available_layers( self ):
+        if self._selected_type is None:
+            return []
         return spec_manager.GetGroupLayers( self._selected_type.group_name )
 
     def get_selected_layers( self ):
         return self._selected_layers
 
-    def add_layer( self ):
-        # Add the next available layer from the spec_manager that we don't already have
-        all_layers = spec_manager.GetGroupLayers( self._selected_type.group_name )
-        for layer in all_layers:
-            if layer not in self._selected_layers:
-                # Add the selected layer and pick a default selected sheet for that layer
+    def add_layer( self, layer ):
+        if layer not in self._selected_layers:
                 self._selected_layers.append( layer )
                 sheets = self.get_sheets_by_layer( layer ).keys()
                 self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheets[0] )
 
                 self._update_sprites()
                 self._notify_views()
-                return
 
     def remove_layer( self, layer_name ):
         self._selected_layers.pop( self._selected_layers.index( layer_name ) )

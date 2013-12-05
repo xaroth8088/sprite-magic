@@ -29,7 +29,7 @@ class Preview( Frame ):
             anim.grid()
 
     def on_model_updated( self ):
-        # TODO: The compositor changed state, so make sure we're up to date, too.
+        # The compositor changed state, so make sure we're up to date, too.
         for child in self.winfo_children():
             child.destroy()
         self._setup_view()

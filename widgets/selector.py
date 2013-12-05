@@ -4,11 +4,10 @@
 from Tkinter import *
 from ttk import *
 
-
 from widgets.type_selector import TypeSelector
 from widgets.sheet_selector import SheetSelector
-from widgets.add_layer import add_layer
 from widgets.animation_speed import AnimationSpeed
+from widgets.available_layers import AvailableLayers
 from models.compositor import COMPOSITOR
 
 class Selector( Frame ):
@@ -64,6 +63,9 @@ class Selector( Frame ):
             self.sheet_selectors_frame.grid_remove()
 
     def _setup_controls( self ):
+        self.avail_layers = AvailableLayers( self )
+        self.avail_layers.grid( row = 2, column = 0 )
+
         self.type_selector = TypeSelector( self )
         self.type_selector.grid( row = 0, column = 0 )
 
@@ -71,7 +73,4 @@ class Selector( Frame ):
         speed_control.grid( row = 1, column = 0 )
 
         self.sheet_selectors_frame = Frame( self )
-        self.sheet_selectors_frame.grid( row = 2, column = 0 )
-
-        self._add_layer = add_layer( self )
-        self._add_layer.grid( row = len( self.sheet_selectors ) + 3 )
+        self.sheet_selectors_frame.grid( row = 2, column = 1 )
