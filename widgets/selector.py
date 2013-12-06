@@ -21,9 +21,12 @@ class Selector( Frame ):
         # Register for changes on the compositor
         COMPOSITOR.register_view( self )
 
-        self.on_model_updated()
+        self.on_model_updated( COMPOSITOR.OTHER_UPDATED )
 
-    def on_model_updated( self ):
+    def on_model_updated( self, reason ):
+        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.LAYER_ORDER_CHANGED]:
+            return
+
         # The compositor changed state, so make sure we're up to date, too.
         self._reorder_sheet_selectors()
 

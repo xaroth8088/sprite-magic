@@ -17,7 +17,7 @@ class TypeSelector( Frame ):
         COMPOSITOR.register_view( self )
 
         self._setup_view()
-        self.on_model_updated()
+        self.on_model_updated( COMPOSITOR.OTHER_UPDATED )
 
     def _setup_view( self ):
         temp = Label( self, text = "Game Type" )
@@ -41,8 +41,11 @@ class TypeSelector( Frame ):
     def _on_type_selection_changed( self, name, index, mode ):
         COMPOSITOR.set_selected_type( self.variable.get() )
 
-    def on_model_updated( self ):
+    def on_model_updated( self, reason ):
         # TODO: The compositor changed state, so make sure we're up to date, too.
+
+#         if reason not in [COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED]:
+#             return
         pass
 
 # TODO: Hook window close and deregister with the compositor

@@ -29,7 +29,10 @@ class AvailableLayers( Frame ):
     def _on_button_pressed( self ):
         COMPOSITOR.add_layer( self.listbox.selection_get() )
 
-    def on_model_updated( self ):
+    def on_model_updated( self, reason ):
+        if reason not in [COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED]:
+            return
+
         # The compositor changed state, so make sure we're up to date, too.
         for child in self.winfo_children():
             child.destroy()

@@ -15,7 +15,7 @@ class Preview( Frame ):
         Frame.__init__( self, master )
         COMPOSITOR.register_view( self )
         self._setup_view()
-        self.on_model_updated()
+        self.on_model_updated( COMPOSITOR.OTHER_UPDATED )
 
     def _setup_view( self ):
         selected_type = COMPOSITOR.get_selected_type()
@@ -28,7 +28,9 @@ class Preview( Frame ):
             anim = PreviewAction( self, action )
             anim.grid()
 
-    def on_model_updated( self ):
+    def on_model_updated( self, reason ):
+        # Preview wants to know about *all* compositor changes
+
         # The compositor changed state, so make sure we're up to date, too.
         for child in self.winfo_children():
             child.destroy()

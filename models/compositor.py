@@ -13,6 +13,14 @@ class _Compositor():
     MIN_SPEED = 10
     MAX_SPEED = 500
 
+    OTHER_UPDATED = 0
+    COLOR_UPDATED = 1
+    SELECTED_TYPE_CHANGED = 2
+    LAYER_ADDED = 3
+    LAYER_REMOVED = 4
+    LAYER_ORDER_CHANGED = 5
+    SHEET_SELECTED = 6
+
     def __init__( self ):
         self._selected_type = None  # Which sprite type has the user selected?
         self._selected_layers = []  # The layers that the user is actively looking at, in order
@@ -20,6 +28,7 @@ class _Compositor():
         self._registered_views = []  # Which views want to know when we update?
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )  # PIL Image objects for each action and direction
         self._selected_sheets = {}  # The sprite_sheet objects that are presently active
+        self._layer_hues = {}
         self._loaded = False
 
         # Ensure the spec manager actually has specs for us
@@ -31,16 +40,17 @@ class _Compositor():
     def deregister_view( self, view ):
         self._registered_views.remove( view )
 
-    def _notify_views( self ):
+    def _notify_views( self, reason ):
+        reason = reason or self.OTHER_UPDATED
         for view in self._registered_views:
-            view.on_model_updated()
+            view.on_model_updated( reason )
 
     def set_selected_type( self, sprite_type_name ):
         self._selected_sheets = {}
         self._selected_layers = []
         self._selected_type = spec_manager.GetTypeByName( sprite_type_name )
         self._update_sprites()
-        self._notify_views()
+        self._notify_views( self.SELECTED_TYPE_CHANGED )
 
     def get_sheets_by_layer( self, layer_name ):
         layers = spec_manager.GetGroupSheetsByLayer( self._selected_type.group_name, layer_name )
@@ -59,15 +69,17 @@ class _Compositor():
                 self._selected_layers.append( layer )
                 sheets = self.get_sheets_by_layer( layer ).keys()
                 self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheets[0] )
+                self._layer_hues[layer] = 0
 
                 self._update_sprites()
-                self._notify_views()
+                self._notify_views( self.LAYER_ADDED )
 
     def remove_layer( self, layer_name ):
         self._selected_layers.pop( self._selected_layers.index( layer_name ) )
         self._selected_sheets.pop( layer_name )
+        self._layer_hues.pop( layer_name )
         self._update_sprites()
-        self._notify_views()
+        self._notify_views( self.LAYER_REMOVED )
 
     def move_layer_up( self, layer_name ):
         self._move_layer( layer_name, -1 )
@@ -90,12 +102,12 @@ class _Compositor():
         self._selected_layers[i], self._selected_layers[j] = self._selected_layers[j], self._selected_layers[i]
 
         self._update_sprites()
-        self._notify_views()
+        self._notify_views( self.LAYER_ORDER_CHANGED )
 
     def select_sheet( self, layer_name, sheet_name ):
         self._selected_sheets[layer_name] = spec_manager.GetSheet( self._selected_type.group_name, layer_name, sheet_name )
         self._update_sprites()
-        self._notify_views()
+        self._notify_views( self.SHEET_SELECTED )
 
     def _update_sprites( self ):
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )
@@ -117,7 +129,7 @@ class _Compositor():
                         # Load the raw spritesheet image
                         image_name = selected_sheet.file_path
                         path = "assets/%s/%s" % ( self._selected_type.group_name, image_name )
-                        raw_sheet = IMAGE_MANAGER.get_image( path )
+                        raw_sheet = IMAGE_MANAGER.get_colorized_image( path, self._layer_hues[layer] )
 
                         # Composite the layer sprite onto the frame image
 
@@ -197,6 +209,11 @@ class _Compositor():
         options['title'] = 'This is a title'
 
         return tkFileDialog.asksaveasfilename( **options )
+
+    def colorize_layer( self, layer, value ):
+        self._layer_hues[layer] = value
+        self._update_sprites()
+        self._notify_views( self.COLOR_UPDATED )
 
 # Instantiate the external-facing instance
 COMPOSITOR = _Compositor()

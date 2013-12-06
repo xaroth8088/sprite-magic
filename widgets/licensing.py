@@ -15,7 +15,7 @@ class Licensing( Frame ):
         Frame.__init__( self, master )
         COMPOSITOR.register_view( self )
         self._setup_view()
-        self.on_model_updated()
+        self.on_model_updated( COMPOSITOR.OTHER_UPDATED )
 
     def _setup_view( self ):
         label = Label( self, text = "Licensing and Attribution Information" )
@@ -24,7 +24,10 @@ class Licensing( Frame ):
         self.license_box = ScrolledText( self )
         self.license_box.grid()
 
-    def on_model_updated( self ):
+    def on_model_updated( self, reason ):
+        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED]:
+            return
+
         # The compositor changed state, so make sure we're up to date, too.
         self.license_box.delete( 1.0, END )
         license_texts = {}

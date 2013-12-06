@@ -4,6 +4,7 @@
 from Tkinter import *
 from ttk import *
 
+from widgets.hue_adjuster import HueAdjuster
 
 from models.compositor import COMPOSITOR
 
@@ -15,6 +16,7 @@ class SheetSelector( Frame ):
         self._setup_order_buttons()
         self._setup_optionmenu()
         self._setup_destroy_button()
+        self._setup_color_adjusters()
 
     def _setup_title( self ):
         title = Label( self, text = self.layer_name )
@@ -41,6 +43,10 @@ class SheetSelector( Frame ):
     def _setup_destroy_button( self ):
         button = Button( self, text = "X", command = self._on_destroy_button_pressed )
         button.grid( row = 1, column = 3 )
+
+    def _setup_color_adjusters( self ):
+        adjuster = HueAdjuster( self, self.layer_name )
+        adjuster.grid( row = 2, column = 0, columnspan = 4 )
 
     def _on_layer_selection_changed( self, name, index, mode ):
         COMPOSITOR.select_sheet( self.layer_name, self.variable.get() )
