@@ -4,7 +4,6 @@
 from PIL import Image
 import numpy as np
 from collections import defaultdict
-from skimage.color import rgb2hsv, hsv2rgb
 
 class _ImageManager():
     def __init__( self ):
