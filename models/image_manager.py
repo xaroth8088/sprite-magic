@@ -10,10 +10,16 @@ class _ImageManager():
         self._images = defaultdict( lambda: {} )
 
     def get_colorized_image( self, image_name, hue ):
+        # Do we already have this sitting in memory?
         if image_name not in self._images or hue not in self._images[image_name]:
             raw_image = Image.open( image_name )
-            self._images[image_name][hue] = self._colorize( raw_image, hue )
+            # If we're not adjusting the hue, there's no sense running colorize on it.
+            if hue == 0:
+                self._images[image_name][hue] = raw_image
+            else:
+                self._images[image_name][hue] = self._colorize( raw_image, hue )
 
+        # return the cached version
         return self._images[image_name][hue]
 
     # Colorize, shift_hue, rgb_to_hsv and hsv_to_rgb adapted from code found at http://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
@@ -22,8 +28,8 @@ class _ImageManager():
         hsv = np.empty_like( rgb )
         hsv[..., 3:] = rgb[..., 3:]
         r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
-        maxc = np.max( rgb[..., :2], axis = -1 )
-        minc = np.min( rgb[..., :2], axis = -1 )
+        maxc = np.max( rgb[..., :3], axis = -1 )
+        minc = np.min( rgb[..., :3], axis = -1 )
         hsv[..., 2] = maxc
         hsv[..., 1] = ( maxc - minc ) / maxc
         rc = ( maxc - r ) / ( maxc - minc )
@@ -60,7 +66,7 @@ class _ImageManager():
 
     def _colorize( self, sheet, hue ):
         arr = np.array( np.asarray( sheet ).astype( 'float' ) )
-        colorized_sheet = Image.fromarray( self._shift_hue( arr, hue / 360. ).astype( 'uint8' ), 'RGBA' )
+        colorized_sheet = Image.fromarray( self._shift_hue( arr, float( hue ) / 360.0 ).astype( 'uint8' ), 'RGBA' )
         return colorized_sheet
 
 

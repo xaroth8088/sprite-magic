@@ -25,7 +25,7 @@ class Licensing( Frame ):
         self.license_box.grid()
 
     def on_model_updated( self, reason ):
-        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED]:
+        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.SHEET_SELECTED]:
             return
 
         # The compositor changed state, so make sure we're up to date, too.
