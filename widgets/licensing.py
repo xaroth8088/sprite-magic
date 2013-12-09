@@ -19,10 +19,10 @@ class Licensing( Frame ):
 
     def _setup_view( self ):
         label = Label( self, text = "Licensing and Attribution Information" )
-        label.grid()
+        label.pack( fill = X, expand = True )
 
         self.license_box = ScrolledText( self )
-        self.license_box.grid()
+        self.license_box.pack( fill = BOTH, expand = True )
 
     def on_model_updated( self, reason ):
         if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.SHEET_SELECTED]:

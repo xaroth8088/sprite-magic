@@ -10,8 +10,8 @@ import spec_manager
 from models.image_manager import IMAGE_MANAGER
 
 class _Compositor():
-    MIN_SPEED = 10
-    MAX_SPEED = 500
+    MIN_FPS = 1
+    MAX_FPS = 30
 
     OTHER_UPDATED = 0
     COLOR_UPDATED = 1
@@ -24,7 +24,7 @@ class _Compositor():
     def __init__( self ):
         self._selected_type = None  # Which sprite type has the user selected?
         self._selected_layers = []  # The layers that the user is actively looking at, in order
-        self._animation_speed = ( int )( floor( ( self.MAX_SPEED + self.MIN_SPEED ) / 2 ) )  # Number of milliseconds between frames
+        self._animation_speed = self._convert_fps_to_delay( float( self.MAX_FPS + self.MIN_FPS ) / 2.0 )  # Number of milliseconds between frames
         self._registered_views = []  # Which views want to know when we update?
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )  # PIL Image objects for each action and direction
         self._selected_sheets = {}  # The sprite_sheet objects that are presently active
@@ -150,8 +150,12 @@ class _Compositor():
     def get_animation_speed( self ):
         return self._animation_speed
 
-    def set_animation_speed( self, speed ):
-        self._animation_speed = speed
+    def set_animation_speed( self, fps ):
+        # Need to convert fps into a ms delay
+        self._animation_speed = self._convert_fps_to_delay( fps )
+
+    def _convert_fps_to_delay( self, fps ):
+        return int( floor( 1000.0 / float( fps ) ) )
 
     def get_selected_type( self ):
         return self._selected_type

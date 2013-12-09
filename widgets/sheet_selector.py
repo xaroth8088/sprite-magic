@@ -3,6 +3,7 @@
 
 from Tkinter import *
 from ttk import *
+from PIL import Image, ImageTk
 
 from widgets.hue_adjuster import HueAdjuster
 
@@ -12,6 +13,9 @@ class SheetSelector( Frame ):
     def __init__( self, master, layer_name ):
         Frame.__init__( self, master )
         self.layer_name = layer_name
+
+        self.configure( borderwidth = 2, padding = 5, relief = GROOVE )
+
         self._setup_title()
         self._setup_order_buttons()
         self._setup_optionmenu()
@@ -20,14 +24,20 @@ class SheetSelector( Frame ):
 
     def _setup_title( self ):
         title = Label( self, text = self.layer_name )
-        title.grid( row = 0, column = 0 )
+        title.grid( row = 0, column = 1, sticky = W + E )
 
     def _setup_order_buttons( self ):
-        button = Button( self, command = self._on_up_pressed, text = "Up" )
-        button.grid( row = 1, column = 0 )
+        raw_image = Image.open( "ui_images/up.png" )
+        raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
+        self.up_image = ImageTk.PhotoImage( raw_image )
+        button = Button( self, command = self._on_up_pressed, image = self.up_image )
+        button.grid( row = 0, column = 0 )
 
-        button = Button( self, command = self._on_down_pressed, text = "Down" )
-        button.grid( row = 1, column = 1 )
+        raw_image = Image.open( "ui_images/down.png" )
+        raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
+        self.down_image = ImageTk.PhotoImage( raw_image )
+        button = Button( self, command = self._on_down_pressed, image = self.down_image )
+        button.grid( row = 1, column = 0 )
 
     def _setup_optionmenu( self ):
         layers = COMPOSITOR.get_sheets_by_layer( self.layer_name ).keys()
@@ -37,16 +47,19 @@ class SheetSelector( Frame ):
         self.variable.set( layers[1] )
 
         layer_menu = OptionMenu( self, self.variable, *layers )
-        layer_menu.grid( row = 1, column = 2 )
+        layer_menu.grid( row = 0, column = 2, sticky = W + E )
         self.variable.trace( 'w', self._on_layer_selection_changed )
 
     def _setup_destroy_button( self ):
-        button = Button( self, text = "X", command = self._on_destroy_button_pressed )
-        button.grid( row = 1, column = 3 )
+        raw_image = Image.open( "ui_images/destroy.png" )
+        raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
+        self.destroy_image = ImageTk.PhotoImage( raw_image )
+        button = Button( self, image = self.destroy_image, command = self._on_destroy_button_pressed )
+        button.grid( row = 0, column = 4, sticky = E )
 
     def _setup_color_adjusters( self ):
         adjuster = HueAdjuster( self, self.layer_name )
-        adjuster.grid( row = 2, column = 0, columnspan = 4 )
+        adjuster.grid( row = 1, column = 1, columnspan = 4 )
 
     def _on_layer_selection_changed( self, name, index, mode ):
         COMPOSITOR.select_sheet( self.layer_name, self.variable.get() )

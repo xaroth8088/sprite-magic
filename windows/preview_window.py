@@ -10,7 +10,7 @@ class PreviewWindow( Toplevel ):
     def __init__( self, master ):
         Toplevel.__init__( self, master )
 
-        self.geometry( '400x400-40+40' )
+        self.geometry( '400x850-10+10' )
         self.transient( master )
         self.title( "Preview" )
 

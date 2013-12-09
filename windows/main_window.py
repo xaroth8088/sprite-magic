@@ -3,12 +3,12 @@ Serves as the hub for all other widgets.
 """
 from Tkinter import *
 from ttk import *
+from functools import partial
 
 from widgets.selector import Selector
-
 from windows.preview_window import PreviewWindow
 from windows.licensing_window import LicensingWindow
-
+from models.spec_manager import GetAvailableTypes
 from models.compositor import COMPOSITOR
 
 class MainWindow( Tk ):
@@ -17,7 +17,7 @@ class MainWindow( Tk ):
 
         # Set up the menu window
         self.title( "Sprite Magic" )
-        self.geometry( '800x800+40+40' )
+        self.geometry( '980x800+10+10' )
 
         # Menu bar for the main window
         self.setupMenuBar()
@@ -50,8 +50,20 @@ class MainWindow( Tk ):
 
         menubar.add_cascade( label = "View", menu = viewmenu )
 
+        # Game Types
+        typesmenu = Menu( menubar, tearoff = 0 )
+        types = GetAvailableTypes()
+        types = [data.name for data in types.values()]
+        for game_type in types:
+            typesmenu.add( "radiobutton", label = game_type, command = partial( self._on_type_selection_changed, game_type ) )
+
+        menubar.add_cascade( label = "Game Types", menu = typesmenu )
+
         # Make it active
         self.config( menu = menubar )
+
+    def _on_type_selection_changed( self, game_type ):
+        COMPOSITOR.set_selected_type( game_type )
 
     def _on_export_combined( self ):
         COMPOSITOR.export_combined_sheet()

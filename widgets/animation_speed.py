@@ -15,12 +15,17 @@ class AnimationSpeed( Frame ):
 
     def _setup_view( self ):
         label = Label( self, text = "Preview Speed" )
-        label.grid()
+        label.grid( row = 0, column = 0, sticky = W )
 
-        self.slider = Scale( self, from_ = COMPOSITOR.MIN_SPEED, to = COMPOSITOR.MAX_SPEED, orient = HORIZONTAL, command = self.on_slider_changed,
-                                length = ( int )( floor( ( COMPOSITOR.MAX_SPEED - COMPOSITOR.MIN_SPEED ) / 2 ) ) )
-        self.slider.set( COMPOSITOR.get_animation_speed() )
-        self.slider.grid()
+        self.fps_label = Label( self, text = "" )
+        self.fps_label.grid( row = 0, column = 1, sticky = W + E )
+
+        self.slider = Scale( self, from_ = COMPOSITOR.MIN_FPS, to = COMPOSITOR.MAX_FPS, orient = HORIZONTAL, command = self.on_slider_changed,
+                             length = 200 )
+        self.slider.set( int( floor( 1000.0 / float( COMPOSITOR.get_animation_speed() ) ) ) )
+        self.slider.grid( row = 1, column = 0, columnspan = 2, sticky = W + E )
 
     def on_slider_changed( self, value ):
-        COMPOSITOR.set_animation_speed( int( float( value ) ) )
+        fps = int( float( value ) )
+        COMPOSITOR.set_animation_speed( fps )
+        self.fps_label.configure( text = str( fps ) + " FPS" )

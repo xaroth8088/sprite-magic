@@ -9,7 +9,7 @@ class LicensingWindow( Toplevel ):
     def __init__( self, master ):
         Toplevel.__init__( self, master )
 
-        self.geometry( "640x400+40-40" )
+        self.geometry( "640x200-10-40" )
         self.transient( master )
         self.title( "License Information" )
 
