@@ -6,9 +6,9 @@
 
 from Tkinter import *
 from ttk import *
+from Tkinter import Radiobutton  # use Tkinter version
 
 from models.compositor import COMPOSITOR
-from functools import partial
 
 class HueAdjuster( Frame ):
     def __init__( self, master, layer ):
@@ -20,9 +20,23 @@ class HueAdjuster( Frame ):
         label = Label( self, text = "Hue" )
         label.grid( row = 0, column = 0 )
 
-        for i in range( 0, 6 ):
-            button = Button( self, command = partial( self._on_button_pressed, ( i * 60 ) ), text = ( i * 60 ) )
-            button.grid( row = 1, column = i )
+        self.selected_hue = IntVar()
+        self.selected_hue.trace( 'w', self._on_hue_selection_changed )
 
-    def _on_button_pressed( self, value ):
-        COMPOSITOR.colorize_layer( self.layer, value )
+        for i in range( 0, 6 ):
+            text = "Original"
+            if i > 0:
+                text = "Hue %d" % ( i, )
+
+            Radiobutton( self, text = text, variable = self.selected_hue, value = ( i * 60 ), indicatoron = 0, padx = 10 ).grid( row = 1, column = i )
+
+    def _on_hue_selection_changed( self, name, index, mode ):
+        root = self.master
+        while root.master is not None:
+            root = root.master
+
+        root.config( cursor = "watch" )
+        root.update()
+        COMPOSITOR.colorize_layer( self.layer, self.selected_hue.get() )
+        root.config( cursor = "" )
+        root.update()
