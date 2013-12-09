@@ -36,4 +36,6 @@ class Licensing( Frame ):
             license_texts["'%s' by %s ( %s ).  Used under license (%s)." % ( sheet.name, sheet.credit_name, sheet.credit_url, sheet.license )] = True
         self.license_box.insert( END, "\n".join( license_texts.keys() ) )
 
-# TODO: Hook window close and deregister with the compositor
+    def destroy( self ):
+        COMPOSITOR.deregister_view( self )
+        Frame.destroy( self )

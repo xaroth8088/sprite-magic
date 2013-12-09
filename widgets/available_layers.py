@@ -40,3 +40,7 @@ class AvailableLayers( Frame ):
 
     def _on_listbox_double_clicked( self, event ):
         COMPOSITOR.add_layer( self.listbox.selection_get() )
+
+    def destroy( self ):
+        COMPOSITOR.deregister_view( self )
+        Frame.destroy( self )

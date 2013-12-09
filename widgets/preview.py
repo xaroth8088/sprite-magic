@@ -36,4 +36,6 @@ class Preview( Frame ):
             child.destroy()
         self._setup_view()
 
-# TODO: Hook window close and deregister with the compositor
+    def destroy( self ):
+        COMPOSITOR.deregister_view( self )
+        Frame.destroy( self )

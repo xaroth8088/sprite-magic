@@ -104,3 +104,7 @@ class Selector( Frame ):
     def _on_window_resize( self, event ):
         '''Reset the scroll region to encompass the inner frame'''
         self.canvas.configure( scrollregion = self.canvas.bbox( "all" ) )
+
+    def destroy( self ):
+        COMPOSITOR.deregister_view( self )
+        Frame.destroy( self )
