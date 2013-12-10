@@ -3,8 +3,8 @@
       {
          "name":"Brown Shoes",
          "layer":"feet",
-         "credit_name":"Joe White, et al.",
-         "credit_url":"http://blog.excastle.com/",
+         "credit_name":"Johannes Sjölund, et al.",
+         "credit_url":"http://opengameart.org/content/character-animations-clothes-armor-weapons-skeleton-enemy-combat-dummy",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"feet/shoes/brown_shoes.png",
          "actions":[

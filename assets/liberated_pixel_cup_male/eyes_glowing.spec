@@ -3,8 +3,8 @@
       {
          "name":"Skeleton Casting Eyeglow",
          "layer":"eyes",
-         "credit_name":"Mark Weyer",
-         "credit_url":"http://opengameart.org/users/caeles",
+         "credit_name":"Johannes Sjölund, et al.",
+         "credit_url":"http://opengameart.org/content/character-animations-clothes-armor-weapons-skeleton-enemy-combat-dummy",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"eyes/casting_eyeglow_skeleton.png",
          "actions":[

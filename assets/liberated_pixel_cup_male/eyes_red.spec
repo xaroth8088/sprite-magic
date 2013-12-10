@@ -3,8 +3,8 @@
       {
          "name":"Red Eyes",
          "layer":"eyes",
-         "credit_name":"Mark Weyer, et al.",
-         "credit_url":"http://opengameart.org/users/caeles",
+         "credit_name":"Matthew Krohn, et al.",
+         "credit_url":"http://opengameart.org/users/makrohn",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"eyes/red.png",
          "actions":[

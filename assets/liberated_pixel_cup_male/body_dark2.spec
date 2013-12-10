@@ -3,8 +3,8 @@
       {
          "name":"Dark Body 2",
          "layer":"body",
-         "credit_name":"Mark Weyer, et al.",
-         "credit_url":"http://opengameart.org/users/caeles",
+         "credit_name":"Marcel van de Steeg, et al.",
+         "credit_url":"http://opengameart.org/users/madmarcel",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"body/dark2.png",
          "actions":[

@@ -3,8 +3,8 @@
       {
          "name":"Red Pants",
          "layer":"legs",
-         "credit_name":"David Conway, Jr., et al.",
-         "credit_url":"https://github.com/jrconway3/Universal-LPC-spritesheet",
+         "credit_name":"Matthew Krohn, et al.",
+         "credit_url":"http://opengameart.org/users/makrohn",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"legs/pants/red_pants.png",
          "actions":[

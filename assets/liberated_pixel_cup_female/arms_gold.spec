@@ -1,7 +1,7 @@
 {
    "sheets":[
       {
-         "name":"Plate Armor - Arms",
+         "name":"Gold Armor - Arms",
          "layer":"arms",
          "credit_name":"Matthew Krohn, et al.",
          "credit_url":"http://opengameart.org/users/makrohn",

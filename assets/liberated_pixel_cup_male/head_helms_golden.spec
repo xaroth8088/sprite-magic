@@ -3,8 +3,8 @@
       {
          "name":"Golden Helmet",
          "layer":"hats",
-         "credit_name":"Matthew Krohn, et al.",
-         "credit_url":"http://opengameart.org/users/makrohn",
+         "credit_name":"Shaun Williams, et al.",
+         "credit_url":"http://www.brushdragon.com/",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"head/helms/golden_helm.png",
          "actions":[
