@@ -11,5 +11,3 @@
 * Horizontal scrolling for preview
 * Find a better GUI toolkit than tkinter, because this is causing a lot of problems with really basic things like scrolling frames, fluid layouts, native widgets, etc.
 * Test scikit-image for hue rotation to see if it's faster than what's implemented now.
-
-*** FIND CREDITS FOR FEMALE HAIR
