@@ -1,5 +1,6 @@
 Luke Mehl
-
+         "credit_name":"TODO Luke Mehl",
+         "credit_url":"TODO",
 ---------
 Most of the female assets
 All layers in the tiaras group
@@ -79,7 +80,8 @@ orc
 
 
 Manuel Riecke
-
+         "credit_name":"TODO",
+         "credit_url":"TODO",
 -------------
 ponytail
 loose
@@ -181,7 +183,8 @@ Golden Armor (male) layers (separated by Matthew Krohn)
 
 
 Joe White
-
+         "credit_name":"TODO joe white",
+         "credit_url":"TODO",
 ---------
 brown shoes (f)
 black shoes (f)

@@ -42,6 +42,7 @@ class _ImageManager():
         hsv[..., 1][idx] = 0.0
         return hsv
 
+    # Converts from HSV to RGB, and also adjusts the hue in doing so.
     def _hsv_to_rgb( self, hsv, delta_hue ):
         # Translated from source of colorsys.hsv_to_rgb
         rgb = np.empty_like( hsv )
