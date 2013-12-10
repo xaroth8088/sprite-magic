@@ -3,8 +3,8 @@
       {
          "name":"Brown Slippers",
          "layer":"feet",
-         "credit_name":"TODO Luke Mehl",
-         "credit_url":"TODO",
+         "credit_name":"Luke Mehl, et al.",
+         "credit_url":"http://opengameart.org/content/female-mage-clothing-set",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"feet/slippers/brown.png",
          "actions":[

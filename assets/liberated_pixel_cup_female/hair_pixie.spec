@@ -3,8 +3,8 @@
       {
          "name":"Pixie",
          "layer":"hair",
-         "credit_name":"TODO",
-         "credit_url":"TODO",
+         "credit_name":"Manuel Riecke, et al.",
+         "credit_url":"http://opengameart.org/users/mrbeast",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"hair/pixie.png",
          "actions":[

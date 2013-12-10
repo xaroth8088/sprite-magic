@@ -3,8 +3,8 @@
       {
          "name":"Ponytail 2",
          "layer":"hair",
-         "credit_name":"TODO joe white",
-         "credit_url":"TODO",
+         "credit_name":"Joe White, et al.",
+         "credit_url":"http://blog.excastle.com/",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"hair/ponytail2.png",
          "actions":[

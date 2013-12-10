@@ -3,7 +3,7 @@
       {
          "name":"Dress with sash",
          "layer":"torso",
-         "credit_name":"Thane Brimhall",
+         "credit_name":"Thane Brimhall, et al.",
          "credit_url":"http://opengameart.org/users/pennomi",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"torso/dress/dress_w_sash.png",

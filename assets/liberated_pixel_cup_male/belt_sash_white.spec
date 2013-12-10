@@ -3,7 +3,7 @@
       {
          "name":"White Sash",
          "layer":"belt",
-         "credit_name":"Thane Brimhall",
+         "credit_name":"Thane Brimhall, et al.",
          "credit_url":"http://opengameart.org/users/pennomi",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"belt/sash/white_sash.png",

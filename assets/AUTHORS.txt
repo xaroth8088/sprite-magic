@@ -1,6 +1,6 @@
 Luke Mehl
-         "credit_name":"TODO Luke Mehl",
-         "credit_url":"TODO",
+         "credit_name":"Luke Mehl, et al.",
+         "credit_url":"http://opengameart.org/content/female-mage-clothing-set",
 ---------
 Most of the female assets
 All layers in the tiaras group
@@ -80,8 +80,8 @@ orc
 
 
 Manuel Riecke
-         "credit_name":"TODO",
-         "credit_url":"TODO",
+         "credit_name":"Manuel Riecke, et al.",
+         "credit_url":"http://opengameart.org/users/mrbeast",
 -------------
 ponytail
 loose
@@ -101,7 +101,7 @@ long
 
 
 Thane Brimhall
-         "credit_name":"Thane Brimhall",
+         "credit_name":"Thane Brimhall, et al.",
          "credit_url":"http://opengameart.org/users/pennomi",
 --------------
 dress with sash
@@ -165,7 +165,7 @@ Orc heads adapted by Marcel van de Steeg from Stephen Challener's original mater
 
 
 Daniel Eddeland
-         "credit_name":"Daniel Eddeland",
+         "credit_name":"Daniel Eddeland, et al.",
          "credit_url":"http://opengameart.org/users/daneeklu",
 ---------------
 greatbow
@@ -183,8 +183,8 @@ Golden Armor (male) layers (separated by Matthew Krohn)
 
 
 Joe White
-         "credit_name":"TODO joe white",
-         "credit_url":"TODO",
+         "credit_name":"Joe White, et al.",
+         "credit_url":"http://blog.excastle.com/",
 ---------
 brown shoes (f)
 black shoes (f)

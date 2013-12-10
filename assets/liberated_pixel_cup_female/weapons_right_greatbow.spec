@@ -3,7 +3,7 @@
       {
          "name":"Greatbow",
          "layer":"right-hand weapon",
-         "credit_name":"Daniel Eddeland",
+         "credit_name":"Daniel Eddeland, et al.",
          "credit_url":"http://opengameart.org/users/daneeklu",
          "license":"Creative Commons Attribution-ShareAlike 3.0 Unported / GNU GENERAL PUBLIC LICENSE Version 3",
          "file_path":"weapons/right hand/greatbow.png",
