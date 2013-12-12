@@ -28,7 +28,7 @@ class _Compositor():
         self._registered_views = []  # Which views want to know when we update?
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )  # PIL Image objects for each action and direction
         self._selected_sheets = {}  # The sprite_sheet objects that are presently active
-        self._layer_hues = {}
+        self._layer_hsvs = {}
         self._loaded = False
 
         # Ensure the spec manager actually has specs for us
@@ -69,7 +69,7 @@ class _Compositor():
                 self._selected_layers.append( layer )
                 sheets = self.get_sheets_by_layer( layer ).keys()
                 self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheets[0] )
-                self._layer_hues[layer] = 0
+                self._layer_hsvs[layer] = ( 0.0, 1.0, 1.0 )
 
                 self._update_sprites()
                 self._notify_views( self.LAYER_ADDED )
@@ -77,7 +77,7 @@ class _Compositor():
     def remove_layer( self, layer_name ):
         self._selected_layers.pop( self._selected_layers.index( layer_name ) )
         self._selected_sheets.pop( layer_name )
-        self._layer_hues.pop( layer_name )
+        self._layer_hsvs.pop( layer_name )
         self._update_sprites()
         self._notify_views( self.LAYER_REMOVED )
 
@@ -129,7 +129,7 @@ class _Compositor():
                         # Load the raw spritesheet image
                         image_name = selected_sheet.file_path
                         path = "assets/%s/%s" % ( self._selected_type.group_name, image_name )
-                        raw_sheet = IMAGE_MANAGER.get_colorized_image( path, self._layer_hues[layer] )
+                        raw_sheet = IMAGE_MANAGER.get_colorized_image( path, self._layer_hsvs[layer] )
 
                         # Composite the layer sprite onto the frame image
 
@@ -214,8 +214,8 @@ class _Compositor():
 
         return tkFileDialog.asksaveasfilename( **options )
 
-    def colorize_layer( self, layer, value ):
-        self._layer_hues[layer] = value
+    def colorize_layer( self, layer, hsv ):
+        self._layer_hsvs[layer] = hsv
         self._update_sprites()
         self._notify_views( self.COLOR_UPDATED )
 

@@ -5,7 +5,7 @@ from Tkinter import *
 from ttk import *
 from PIL import Image, ImageTk
 
-from widgets.hue_adjuster import HueAdjuster
+from widgets.color_adjuster import ColorAdjuster
 
 from models.compositor import COMPOSITOR
 
@@ -58,7 +58,7 @@ class SheetSelector( Frame ):
         button.grid( row = 0, column = 4, sticky = E )
 
     def _setup_color_adjusters( self ):
-        adjuster = HueAdjuster( self, self.layer_name )
+        adjuster = ColorAdjuster( self, self.layer_name )
         adjuster.grid( row = 1, column = 1, columnspan = 4 )
 
     def _on_layer_selection_changed( self, name, index, mode ):
