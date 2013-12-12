@@ -6,7 +6,7 @@
 
 from Tkinter import *
 from ttk import *
-from Tkinter import Radiobutton  # use Tkinter version
+from math import floor
 
 from models.compositor import COMPOSITOR
 
@@ -14,65 +14,70 @@ class ColorAdjuster( Frame ):
     def __init__( self, master, layer ):
         Frame.__init__( self, master )
         self.layer = layer
+
+        self._old_h = 0.0
+        self._old_s = 1.0
+        self._old_v = 1.0
+
         self._setup_view()
 
     def _setup_view( self ):
         self._setup_hue()
         self._setup_saturation()
         self._setup_value()
+        self._setup_commands()  # doing this after, so that all initial values can be set without triggering the command
+
+    def _setup_commands( self ):
+        self.hue_scale.configure( command = self._on_slider_changed )
+        self.saturation_scale.configure( command = self._on_slider_changed )
+        self.value_scale.configure( command = self._on_slider_changed )
+        self._on_slider_changed( None )
 
     def _setup_hue( self ):
-        label = Label( self, text = "Hue" )
-        label.grid( row = 0, column = 0 )
+        self.hue_label = Label( self )
+        self.hue_label.grid( row = 0, column = 0 )
 
-        self.selected_hue = IntVar()
-        self.selected_hue.trace( 'w', self._on_hue_selection_changed )
-
-        for i in range( 0, 6 ):
-            text = "Original"
-            if i > 0:
-                text = "Hue %d" % ( i, )
-
-            Radiobutton( self, text = text, variable = self.selected_hue, value = ( i * 60 ), indicatoron = 0, padx = 10 ).grid( row = 1, column = i )
+        self.hue_scale = Scale( self, from_ = 0.0, to = 360.0, orient = HORIZONTAL, length = 200 )
+        self.hue_scale.set( 0.0 )
+        self.hue_scale.grid( row = 1, column = 0 )
 
     def _setup_saturation( self ):
-        label = Label( self, text = "saturation" )
-        label.grid( row = 2, column = 0 )
+        self.saturation_label = Label( self )
+        self.saturation_label.grid( row = 2, column = 0 )
 
-        self.selected_saturation = IntVar()
-        self.selected_saturation.trace( 'w', self._on_hue_selection_changed )
-
-        for i in range( 0, 6 ):
-            text = "Original"
-            if i < 5:
-                text = "sat. %d" % ( i, )
-
-            Radiobutton( self, text = text, variable = self.selected_saturation, value = i, indicatoron = 0, padx = 10 ).grid( row = 3, column = i )
+        self.saturation_scale = Scale( self, from_ = 0.0, to = 2.0, orient = HORIZONTAL, length = 200 )
+        self.saturation_scale.set( 1.0 )
+        self.saturation_scale.grid( row = 3, column = 0 )
 
     def _setup_value( self ):
-        label = Label( self, text = "Value" )
-        label.grid( row = 4, column = 0 )
+        self.value_label = Label( self )
+        self.value_label.grid( row = 4, column = 0 )
 
-        self.selected_value = IntVar()
-        self.selected_value.trace( 'w', self._on_hue_selection_changed )
+        self.value_scale = Scale( self, from_ = 0.0, to = 2.0, orient = HORIZONTAL, length = 200 )
+        self.value_scale.set( 1.0 )
+        self.value_scale.grid( row = 5, column = 0 )
 
-        for i in range( 0, 6 ):
-            text = "Original"
-            if i < 5:
-                text = "Value %d" % ( i, )
+    def _on_slider_changed( self, value ):
+        self._update_colorization()
 
-            Radiobutton( self, text = text, variable = self.selected_value, value = i, indicatoron = 0, padx = 10 ).grid( row = 5, column = i )
+    def _nearest_n( self, value, resolution ):
+        fraction = 1 / resolution;
+        return floor( fraction * value ) / fraction
 
-    def _on_hue_selection_changed( self, name, index, mode ):
-        root = self.master
-        while root.master is not None:
-            root = root.master
+    def _update_colorization( self ):
+        h = self._nearest_n( self.hue_scale.get(), 15.0 )
+        self.hue_label.configure( text = "hue: %s" % ( h, ) )
 
-        root.config( cursor = "watch" )
-        root.update()
+        s = self._nearest_n( self.saturation_scale.get(), 0.2 )
+        self.saturation_label.configure( text = "saturation: %s" % ( s, ) )
 
-        hsv = ( self.selected_hue.get(), float( self.selected_saturation.get() ) * 0.2, self.selected_value.get() * 0.2 )
+        v = self._nearest_n( self.value_scale.get(), 0.2 )
+        self.value_label.configure( text = "brightness: %s" % ( v, ) )
 
-        COMPOSITOR.colorize_layer( self.layer, hsv )
-        root.config( cursor = "" )
-        root.update()
+        if self._old_h != h or self._old_s != s or self._old_v != v:
+            hsv = ( h, s, v )
+            COMPOSITOR.colorize_layer( self.layer, hsv )
+
+        self._old_h = h
+        self._old_s = s
+        self._old_v = v
