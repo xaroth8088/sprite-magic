@@ -2,9 +2,9 @@ sprite-magic
 ============
 A tool for making and sharing game-ready spritesheets.  Comes with a library of free sprites!
 
-This project is in its infancy, but there's now something to tinker with if you're a developer.  The project currently requires Python 2.7 and the PIL installed to run.  New features, bugfixes, documentation, and art + spec contributions are welcome!
+This software is in pre-release, though it's probably getting good enough to actually use now.  If you're just looking to get down to business and have an easy-to-use, battle-tested program, be sure to check back later once the dust has settled a bit.
 
-If you're just looking to get down to business and have an easy-to-use program, be sure to check back later once the dust has settled a bit.
+A pre-packaged Windows executable is available via the releases page; a Mac OS package will come eventually.  If you want to run from source, you'll need: Python 2.7, NumPy, and PIL.  New features, bugfixes, documentation, and art + spec contributions are welcome!
 
 What is this?
 -------------
