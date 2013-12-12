@@ -10,4 +10,3 @@
 * Give a button to copy the licensing information to clipboard (with a confirmation dialog upon clicking, so they know it's in the buffer)
 * Horizontal scrolling for preview
 * Find a better GUI toolkit than tkinter, because this is causing a lot of problems with really basic things like scrolling frames, fluid layouts, native widgets, etc.
-* Test scikit-image for hue rotation to see if it's faster than what's implemented now.
