@@ -6,6 +6,14 @@ import numpy as np
 from collections import defaultdict
 from math import sin, cos, radians
 
+RGBA_TO_YIQ = np.matrix( 
+          [[ 0.299   , 0.587   , 0.114, 0.0   ],
+            [ 0.595716, -0.274453, -0.321263, 0.0],
+            [ 0.211456, -0.522591, 0.311135, 0.0],
+            [ 0.0, 0.0, 0.0, 1.0]
+            ] )
+YIQ_TO_RGBA = RGBA_TO_YIQ.I
+
 class _ImageManager():
     def __init__( self ):
         self._images = defaultdict( lambda: {} )
@@ -22,20 +30,11 @@ class _ImageManager():
     def _shift_hsv( self, arr, delta_hue, saturation, value ):
         # Adapted from algorithm at http://beesbuzz.biz/code/hsv_color_transforms.php
         delta_hue = float( delta_hue )
-        print "hsv: %s %s %s" % ( delta_hue, saturation, value )
+
         v = value
         s = saturation
         u = cos( radians( delta_hue ) )
         w = sin( radians( delta_hue ) )
-
-        rgba_to_yiq = np.matrix( 
-          [[ 0.299   , 0.587   , 0.114, 0.0   ],
-            [ 0.595716, -0.274453, -0.321263, 0.0],
-            [ 0.211456, -0.522591, 0.311135, 0.0],
-            [ 0.0, 0.0, 0.0, 1.0]
-            ] )
-
-        yiq_to_rgba = rgba_to_yiq.I
 
         hsv_adjust = np.matrix( 
             [
@@ -46,7 +45,7 @@ class _ImageManager():
              ], dtype = "double"
         )
 
-        transform_matrix = np.asarray( yiq_to_rgba.dot( hsv_adjust ).dot( rgba_to_yiq ) )
+        transform_matrix = np.asarray( YIQ_TO_RGBA.dot( hsv_adjust ).dot( RGBA_TO_YIQ ) )
 
         shape = np.shape( arr )  # x, y, 4
         temp = arr.reshape( ( shape[0] * shape[1], 4 ) )
@@ -60,6 +59,5 @@ class _ImageManager():
         arr = np.asarray( sheet ).astype( 'float' )
         colorized_sheet = Image.fromarray( self._shift_hsv( arr, hsv[0], hsv[1], hsv[2] ).astype( 'uint8' ), 'RGBA' )
         return colorized_sheet
-
 
 IMAGE_MANAGER = _ImageManager()
