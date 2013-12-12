@@ -43,20 +43,20 @@ class SheetSelector( Frame ):
         raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
         self.destroy_image = ImageTk.PhotoImage( raw_image )
         button = Button( self, image = self.destroy_image, command = self._on_destroy_button_pressed )
-        button.grid( row = 0, column = 2 )
+        button.grid( row = 0, column = 2, sticky = E )
 
     def _setup_order_buttons( self ):
         raw_image = Image.open( "ui_images/up.png" )
         raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
         self.up_image = ImageTk.PhotoImage( raw_image )
         button = Button( self, command = self._on_up_pressed, image = self.up_image )
-        button.grid( row = 1, column = 0 )
+        button.grid( row = 1, column = 0, sticky = W )
 
         raw_image = Image.open( "ui_images/down.png" )
         raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
         self.down_image = ImageTk.PhotoImage( raw_image )
         button = Button( self, command = self._on_down_pressed, image = self.down_image )
-        button.grid( row = 2, column = 0 )
+        button.grid( row = 2, column = 0, sticky = W )
 
     def _setup_color_adjusters( self ):
         adjuster = ColorAdjuster( self, self.layer_name )
