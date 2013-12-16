@@ -20,6 +20,7 @@ class SheetSelector( Frame ):
         self._setup_title()
         self._setup_optionmenu()
         self._setup_destroy_button()
+        self._setup_export_button()
         self._setup_order_buttons()
         self._setup_color_adjusters()
 
@@ -44,6 +45,10 @@ class SheetSelector( Frame ):
         self.destroy_image = ImageTk.PhotoImage( raw_image )
         button = Button( self, image = self.destroy_image, command = self._on_destroy_button_pressed )
         button.grid( row = 0, column = 2, sticky = E )
+
+    def _setup_export_button( self ):
+        button = Button( self, text = "Export layer", command = self._on_export_pressed )
+        button.grid( row = 2, column = 2, sticky = E )
 
     def _setup_order_buttons( self ):
         raw_image = Image.open( "ui_images/up.png" )
@@ -73,3 +78,6 @@ class SheetSelector( Frame ):
 
     def _on_destroy_button_pressed( self ):
         COMPOSITOR.remove_layer( self.layer_name )
+
+    def _on_export_pressed( self ):
+        COMPOSITOR.export_layer_sheet( self.layer_name )

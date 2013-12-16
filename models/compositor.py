@@ -163,9 +163,55 @@ class _Compositor():
     def get_selected_sheets( self ):
         return self._selected_sheets
 
+    def export_layer_sheet( self, layer ):
+        # Prompt for save file location
+        file_path = self._get_save_location( "Export layer as spritesheet" )
+        if not file_path:
+            return
+
+        # Determine the best size for the sheet
+        # Create the Image to hold the sprites
+        export_sheet = self._create_export_sheet()
+
+        # For simplicity's sake, we'll stash the current selected layers, reset it to just the layer
+        # we want, update the sprites, then restore the layers and re-update
+        stashed_layers = self._selected_layers
+        self._selected_layers = [ layer ]
+        self._update_sprites()
+
+        # Format: Each action+direction will be one row, each frame one column
+        row = 0
+        column = 0
+        sprite_width = self._selected_type.tile_width
+        sprite_height = self._selected_type.tile_height
+
+        # For each action,
+        for action in self._selected_type.actions:
+            # For each direction,
+            for direction in self._selected_type.directions:
+                # Get the sprites for this action + direction
+                sprites = self.get_sprites( action["name"], direction )
+
+                # For each sprite,
+                for sprite in sprites:
+                    # Add the layer to the Image for that frame
+                    export_sheet.paste( sprite, ( column * sprite_width, row * sprite_height, ( column + 1 ) * sprite_width, ( row + 1 ) * sprite_height ) )
+                    column = column + 1
+                # Next row
+                row = row + 1
+                column = 0
+
+        # Export the file
+        export_sheet.save( file_path, "PNG" )
+
+        # Restore the selected layers
+        self._selected_layers = stashed_layers
+        self._update_sprites()
+
+
     def export_combined_sheet( self ):
         # Prompt for save file location
-        file_path = self._get_save_location()
+        file_path = self._get_save_location( "Export combined spritesheet" )
         if not file_path:
             return
 
@@ -194,6 +240,7 @@ class _Compositor():
                 # Next row
                 row = row + 1
                 column = 0
+
         # Export the file
         export_sheet.save( file_path, "PNG" )
 
@@ -205,12 +252,12 @@ class _Compositor():
         sheet = Image.new( 'RGBA', ( width, height ) )
         return sheet
 
-    def _get_save_location( self ):
+    def _get_save_location( self, title ):
         options = {}
         options['defaultextension'] = '.png'
         options['filetypes'] = [( 'PNG files', '.png' )]
         options['initialfile'] = 'exported_spritesheet.png'
-        options['title'] = 'This is a title'
+        options['title'] = title
 
         return tkFileDialog.asksaveasfilename( **options )
 
