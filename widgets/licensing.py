@@ -29,6 +29,7 @@ class Licensing( Frame ):
         button.grid( row = 1, column = 0, sticky = N + E )
 
     def _on_copy_pressed( self ):
+        self.license_box.clipboard_clear()
         self.license_box.clipboard_append( self.license_box.get( '0.0', END ) )
 
     def on_model_updated( self, reason ):
