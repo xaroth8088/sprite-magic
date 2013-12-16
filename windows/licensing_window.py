@@ -11,7 +11,7 @@ class LicensingWindow( Toplevel ):
 
         self.geometry( "640x200-10-40" )
         self.transient( master )
-        self.title( "License Information" )
+        self.title( "Licensing and Attribution Information" )
 
         self.licensing_window = Licensing( self )
-        self.licensing_window.pack( fill = BOTH, expand = True )
+        self.licensing_window.pack( fill = BOTH, expand = True, padx = 5, pady = 5 )

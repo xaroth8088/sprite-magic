@@ -19,11 +19,17 @@ class Licensing( Frame ):
         self.on_model_updated( COMPOSITOR.OTHER_UPDATED )
 
     def _setup_view( self ):
-        label = Label( self, text = "Licensing and Attribution Information" )
-        label.pack( fill = X, expand = True )
+        self.rowconfigure( 0, weight = 1 )
+        self.columnconfigure( 0, weight = 1 )
 
         self.license_box = ScrolledText( self )
-        self.license_box.pack( fill = BOTH, expand = True )
+        self.license_box.grid( row = 0, column = 0, sticky = W + E + N + S, padx = 5, pady = 5 )
+
+        button = Button( self, text = "Copy to clipboard", command = self._on_copy_pressed )
+        button.grid( row = 1, column = 0, sticky = N + E )
+
+    def _on_copy_pressed( self ):
+        self.license_box.clipboard_append( self.license_box.get( '0.0', END ) )
 
     def on_model_updated( self, reason ):
         if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.SHEET_SELECTED]:
