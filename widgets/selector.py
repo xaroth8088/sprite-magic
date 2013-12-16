@@ -99,7 +99,7 @@ class Selector( Frame ):
         speed_control.pack( fill = X )
 
         self.avail_layers = AvailableLayers( self.left_frame )
-        self.avail_layers.pack( fill = X )
+        self.avail_layers.pack( fill = BOTH, expand = True )
 
         # Right frame
         self.right_frame = VerticalScrolledFrame( self )
