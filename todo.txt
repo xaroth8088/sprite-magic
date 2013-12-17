@@ -1,4 +1,3 @@
-* Export sheets in a variety of ways
 * A wizard to help create .spec files
 * Unit tests
 * Proper logging
@@ -6,7 +5,5 @@
 * Permit spec files to exist in subdirectories
 * Permit sheet spec files to include an offset into the image for the grid
 * Permit sheet spec files to include absolute image coordinates, instead of the implied grid
-* Organize the licensing information more logically
-* Give a button to copy the licensing information to clipboard (with a confirmation dialog upon clicking, so they know it's in the buffer)
 * Horizontal scrolling for preview
 * Find a better GUI toolkit than tkinter, because this is causing a lot of problems with really basic things like scrolling frames, fluid layouts, native widgets, etc.
