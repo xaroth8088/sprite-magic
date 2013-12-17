@@ -13,7 +13,7 @@ class AvailableLayers( Frame ):
 
     def _setup_view( self ):
         button = Button( self, command = self._on_button_pressed, text = "Add Layer" )
-        button.pack( side = BOTTOM )
+        button.pack( side = BOTTOM, pady = 5 )
         scrollbar = Scrollbar( self, orient = VERTICAL )
         self.listbox = Listbox( self, yscrollcommand = scrollbar.set )
         scrollbar.config( command = self.listbox.yview )

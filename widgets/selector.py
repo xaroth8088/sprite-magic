@@ -96,10 +96,10 @@ class Selector( Frame ):
         self.left_frame.pack( side = LEFT, fill = Y )
 
         speed_control = AnimationSpeed( self.left_frame )
-        speed_control.pack( fill = X )
+        speed_control.pack( fill = X, padx = 10 )
 
         self.avail_layers = AvailableLayers( self.left_frame )
-        self.avail_layers.pack( fill = BOTH, expand = True )
+        self.avail_layers.pack( fill = BOTH, expand = True, padx = 10 )
 
         # Right frame
         self.right_frame = VerticalScrolledFrame( self )
