@@ -21,6 +21,7 @@ class SheetSelector( Frame ):
         self._setup_optionmenu( selected_sheet )
         self._setup_destroy_button()
         self._setup_export_button()
+        self._setup_randomize_buttons()
         self._setup_order_buttons()
         self._setup_color_adjusters()
 
@@ -53,6 +54,13 @@ class SheetSelector( Frame ):
         button = Button( self, text = "Export layer", command = self._on_export_pressed )
         button.grid( row = 2, column = 2, sticky = E )
 
+    def _setup_randomize_buttons( self ):
+        button = Button( self, text = "Randomize layer", command = self._on_randomize_layer )
+        button.grid( row = 3, column = 2, sticky = E )
+
+        button = Button( self, text = "Randomize colors", command = self._on_randomize_colors )
+        button.grid( row = 4, column = 2, sticky = E )
+
     def _setup_order_buttons( self ):
         raw_image = Image.open( "ui_images/up.png" )
         raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
@@ -64,11 +72,11 @@ class SheetSelector( Frame ):
         raw_image.thumbnail( ( 32, 32 ), Image.ANTIALIAS )
         self.down_image = ImageTk.PhotoImage( raw_image )
         button = Button( self, command = self._on_down_pressed, image = self.down_image )
-        button.grid( row = 2, column = 0, sticky = W )
+        button.grid( row = 4, column = 0, sticky = W )
 
     def _setup_color_adjusters( self ):
         adjuster = ColorAdjuster( self, self.layer_name )
-        adjuster.grid( row = 1, column = 1, rowspan = 2 )
+        adjuster.grid( row = 1, column = 1, rowspan = 4 )
 
     def _on_layer_selection_changed( self, name, index, mode ):
         COMPOSITOR.select_sheet( self.layer_name, self.variable.get() )
@@ -84,3 +92,10 @@ class SheetSelector( Frame ):
 
     def _on_export_pressed( self ):
         COMPOSITOR.export_layer_sheet( self.layer_name )
+
+    def _on_randomize_layer( self ):
+        COMPOSITOR.randomize_layer( self.layer_name )
+
+    def _on_randomize_colors( self ):
+        COMPOSITOR.randomize_colors( self.layer_name )
+

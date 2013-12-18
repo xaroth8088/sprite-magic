@@ -273,18 +273,8 @@ class _Compositor():
     def randomize( self ):
         # For each selected layer,
         for layer in self._selected_layers:
-            # Pick a random sheet
-            sheets = self.get_sheets_by_layer( layer )
-            sheet_name = choice( sheets.keys() )
-            self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheet_name )
-
-            # Randomize the HSV
-            # TODO: Consolidate these normalization rules in one place, not in here and color_adjuster
-            h = self._nearest_n( random() * 360.0, 15.0 )
-            s = self._nearest_n( random() * 2.0, 0.2 )
-            v = self._nearest_n( random() * 1.6 + 0.2, 0.2 )  # Probably, nobody wants pure black or white from randomize
-
-            self._layer_hsvs[layer] = ( h, s, v )
+            self._randomize_layer( layer )
+            self._randomize_layer_hsv( layer )
 
         # Update sprites
         self._update_sprites()
@@ -298,6 +288,39 @@ class _Compositor():
 
     def get_hsv_by_layer( self, layer_name ):
         return self._layer_hsvs[layer_name]
+
+    def _randomize_layer( self, layer_name ):
+        # Pick a random sheet for this layer
+        sheets = self.get_sheets_by_layer( layer_name )
+        sheet_name = choice( sheets.keys() )
+        self._selected_sheets[layer_name] = spec_manager.GetSheet( self._selected_type.group_name, layer_name, sheet_name )
+
+    def _randomize_layer_hsv( self, layer_name ):
+        # TODO: Consolidate these normalization rules in one place, not in here and color_adjuster
+        h = self._nearest_n( random() * 360.0, 15.0 )
+        s = self._nearest_n( random() * 2.0, 0.2 )
+        v = self._nearest_n( random() * 1.6 + 0.2, 0.2 )  # Probably, nobody wants pure black or white from randomize
+
+        self._layer_hsvs[layer_name] = ( h, s, v )
+
+    def randomize_layer( self, layer_name ):
+        self._randomize_layer( layer_name )
+        self._randomize_layer_hsv( layer_name )
+
+        # Update sprites
+        self._update_sprites()
+
+        # Let our views know something has changed
+        self._notify_views( self.LAYER_ORDER_CHANGED )
+
+    def randomize_colors( self, layer_name ):
+        self._randomize_layer_hsv( layer_name )
+
+        # Update sprites
+        self._update_sprites()
+
+        # Let our views know something has changed
+        self._notify_views( self.LAYER_ORDER_CHANGED )
 
 # Instantiate the external-facing instance
 COMPOSITOR = _Compositor()
