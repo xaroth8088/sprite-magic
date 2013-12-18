@@ -68,3 +68,15 @@ def GetAvailableTypes():
 def GetSheet( group_name, layer_name, sheet_name ):
     global _SHEETS
     return _SHEETS[group_name][layer_name][sheet_name]
+
+def GetAllSheets():
+    global _SHEETS
+
+    returned_sheets = []
+
+    for group_name in _SHEETS:
+        for layer_name in _SHEETS[group_name]:
+            for sheet_name in _SHEETS[group_name][layer_name]:
+                returned_sheets.append( _SHEETS[group_name][layer_name][sheet_name] )
+
+    return returned_sheets

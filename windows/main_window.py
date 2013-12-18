@@ -8,6 +8,7 @@ from functools import partial
 from widgets.selector import Selector
 from windows.preview_window import PreviewWindow
 from windows.licensing_window import LicensingWindow
+from windows.about_window import AboutWindow
 from models.spec_manager import GetAvailableTypes
 from models.compositor import COMPOSITOR
 
@@ -59,6 +60,12 @@ class MainWindow( Tk ):
 
         menubar.add_cascade( label = "Game Types", menu = typesmenu )
 
+        # Help
+        helpmenu = Menu( menubar, tearoff = 0 )
+        helpmenu.add_command( label = "About Sprite Magic", command = self.showAbout )
+        # TODO: a link to the github wiki
+        menubar.add_cascade( label = "Help", menu = helpmenu )
+
         # Make it active
         self.config( menu = menubar )
 
@@ -77,6 +84,9 @@ class MainWindow( Tk ):
 
     def showLicensing( self ):
         self.licensing_window = LicensingWindow( self )
+
+    def showAbout( self ):
+        self.about_window = AboutWindow( self )
 
     def exit( self, event ):
         self.quit()

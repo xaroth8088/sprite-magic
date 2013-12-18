@@ -7,9 +7,9 @@ Created on Nov 24, 2013
 from Tkinter import *
 from ttk import *
 from ScrolledText import ScrolledText
-from collections import defaultdict
 
 from models.compositor import COMPOSITOR
+from models.licensing import LICENSING
 
 class Licensing( Frame ):
     BUTTON_TEXT = "Copy to clipboard"
@@ -46,26 +46,8 @@ class Licensing( Frame ):
         # clear the existing text
         self.license_box.delete( 1.0, END )
 
-        # Organize the license information for display
-        licenses = defaultdict( lambda:
-            defaultdict( lambda: [] )
-        )
-
-        sheets = COMPOSITOR.get_selected_sheets()
-        for sheet in sheets.values():
-            key = ( sheet.credit_name, sheet.credit_url )
-            licenses[sheet.license][key].append( sheet.name )
-
-        # Construct and display the combined license text
-        license_text = ""
-        for art_license in licenses:
-            license_text += "The following artwork is used by permission in accordance with %s:\n" % ( art_license, )
-            for key in licenses[art_license]:
-                credit, url = key
-                license_text += "    Artwork by %s ( %s ):\n        " % ( credit, url )
-                license_text += ', '.join( licenses[art_license][( credit, url )] )
-                license_text += "\n"
-            license_text += "\n"
+        sheets = COMPOSITOR.get_selected_sheets().values()
+        license_text = LICENSING.get_formatted_licensing( sheets )
 
         self.license_box.insert( END, license_text )
         self.license_box.configure( state = DISABLED )
