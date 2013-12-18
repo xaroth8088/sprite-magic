@@ -5,6 +5,7 @@ from collections import defaultdict
 from PIL import Image
 from math import floor
 import tkFileDialog
+from random import choice, random
 
 import spec_manager
 from models.image_manager import IMAGE_MANAGER
@@ -108,6 +109,9 @@ class _Compositor():
         self._selected_sheets[layer_name] = spec_manager.GetSheet( self._selected_type.group_name, layer_name, sheet_name )
         self._update_sprites()
         self._notify_views( self.SHEET_SELECTED )
+
+    def get_selected_sheet( self, layer_name ):
+        return self._selected_sheets[layer_name]
 
     def _update_sprites( self ):
         self._sprites = defaultdict( lambda: defaultdict( lambda: [] ) )
@@ -265,6 +269,35 @@ class _Compositor():
         self._layer_hsvs[layer] = hsv
         self._update_sprites()
         self._notify_views( self.COLOR_UPDATED )
+
+    def randomize( self ):
+        # For each selected layer,
+        for layer in self._selected_layers:
+            # Pick a random sheet
+            sheets = self.get_sheets_by_layer( layer )
+            sheet_name = choice( sheets.keys() )
+            self._selected_sheets[layer] = spec_manager.GetSheet( self._selected_type.group_name, layer, sheet_name )
+
+            # Randomize the HSV
+            # TODO: Consolidate these normalization rules in one place, not in here and color_adjuster
+            h = self._nearest_n( random() * 360.0, 15.0 )
+            s = self._nearest_n( random() * 2.0, 0.2 )
+            v = self._nearest_n( random() * 1.6 + 0.2, 0.2 )  # Probably, nobody wants pure black or white from randomize
+
+            self._layer_hsvs[layer] = ( h, s, v )
+
+        # Update sprites
+        self._update_sprites()
+
+        # Let our views know something has changed
+        self._notify_views( self.LAYER_ORDER_CHANGED )
+
+    def _nearest_n( self, value, resolution ):
+        fraction = 1 / resolution;
+        return floor( fraction * value ) / fraction
+
+    def get_hsv_by_layer( self, layer_name ):
+        return self._layer_hsvs[layer_name]
 
 # Instantiate the external-facing instance
 COMPOSITOR = _Compositor()

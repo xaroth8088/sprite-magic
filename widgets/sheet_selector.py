@@ -10,7 +10,7 @@ from widgets.color_adjuster import ColorAdjuster
 from models.compositor import COMPOSITOR
 
 class SheetSelector( Frame ):
-    def __init__( self, master, layer_name ):
+    def __init__( self, master, layer_name, selected_sheet = None ):
         Frame.__init__( self, master )
         self.layer_name = layer_name
 
@@ -18,7 +18,7 @@ class SheetSelector( Frame ):
         self.columnconfigure( 1, weight = 1 )
 
         self._setup_title()
-        self._setup_optionmenu()
+        self._setup_optionmenu( selected_sheet )
         self._setup_destroy_button()
         self._setup_export_button()
         self._setup_order_buttons()
@@ -28,12 +28,15 @@ class SheetSelector( Frame ):
         title = Label( self, text = self.layer_name )
         title.grid( row = 0, column = 0 )
 
-    def _setup_optionmenu( self ):
+    def _setup_optionmenu( self, selected_sheet = None ):
         layers = COMPOSITOR.get_sheets_by_layer( self.layer_name ).keys()
         layers.insert( 0, "" )  # Need a blank entry at the head, otherwise ttk.OptionMenu will cause the first entry to disappear
 
         self.variable = StringVar( self )
-        self.variable.set( layers[1] )
+        if selected_sheet is None:
+            self.variable.set( layers[1] )
+        else:
+            self.variable.set( selected_sheet )
 
         layer_menu = OptionMenu( self, self.variable, *layers )
         layer_menu.grid( row = 0, column = 1 )

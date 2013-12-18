@@ -33,7 +33,7 @@ class PreviewAnimation( Frame ):
 
         self.frame_label.configure( text = "Frame: %s" % ( self.frame_counter % len( self.sprites ) ) )
 
-        self.after( COMPOSITOR.get_animation_speed(), self._advance_frame )  # Animate!
+        self.timer = self.after( COMPOSITOR.get_animation_speed(), self._advance_frame )  # Animate!
 
     def _setup_view( self ):
         self.label = Label( self )
@@ -43,3 +43,9 @@ class PreviewAnimation( Frame ):
         self.frame_label.grid()
 
         self._draw_frame()
+
+    def destroy( self ):
+        if self.timer is not None:
+            self.after_cancel( self.timer )
+
+        Frame.destroy( self )

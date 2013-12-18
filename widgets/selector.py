@@ -49,17 +49,16 @@ class Selector( Frame ):
     def _reorder_sheet_selectors( self ):
         selected_layers = COMPOSITOR.get_selected_layers()
 
-        # For each of our layers,
+        # Delete all our layers
         layers_to_remove = []
         for layer in self.sheet_selectors.keys():
-            # Check if it exists in the compositor.  If not, delete that layer.
-            if layer not in selected_layers:
-                layers_to_remove.append( layer )
+            layers_to_remove.append( layer )
 
-        # actually delete the layers
         for layer in layers_to_remove:
             self.sheet_selectors.get( layer ).destroy()
             self.sheet_selectors.pop( layer )
+
+        self.sheet_selectors = {}
 
         # Show a message if no type has been selected
         if self.warning is not None:
@@ -78,15 +77,10 @@ class Selector( Frame ):
         # For each layer in the compositor,
         row = 1
         for layer in selected_layers:
-            # If the sheet_selector exists in our local state, re-attach it to the frame in the right spot
-            if layer in self.sheet_selectors:
-                self.sheet_selectors.get( layer ).grid( row = row, column = 0, sticky = E + W )
-            else:
-                # Else, create a new sheet_selector for that layer, attach it to the frame.
-                layer_selector = SheetSelector( self.sheet_selectors_frame, layer )
-                layer_selector.grid( row = row, column = 0, sticky = E + W )
-                self.sheet_selectors[layer] = layer_selector
-
+            # create a new sheet_selector for this layer, attach it to the frame.
+            layer_selector = SheetSelector( self.sheet_selectors_frame, layer, COMPOSITOR.get_selected_sheet( layer ).name )
+            layer_selector.grid( row = row, column = 0, sticky = E + W )
+            self.sheet_selectors[layer] = layer_selector
             row = row + 1
 
     def _setup_controls( self ):
@@ -101,6 +95,9 @@ class Selector( Frame ):
         self.avail_layers = AvailableLayers( self.left_frame )
         self.avail_layers.pack( fill = BOTH, expand = True, padx = 10 )
 
+        randomize = Button( self.left_frame, text = "Randomize", command = self._on_randomize )
+        randomize.pack( padx = 10, pady = 5 )
+
         # Right frame
         self.right_frame = VerticalScrolledFrame( self )
         self.right_frame.pack( side = LEFT, fill = BOTH, expand = True )
@@ -112,3 +109,6 @@ class Selector( Frame ):
     def destroy( self ):
         COMPOSITOR.deregister_view( self )
         Frame.destroy( self )
+
+    def _on_randomize( self ):
+        COMPOSITOR.randomize()

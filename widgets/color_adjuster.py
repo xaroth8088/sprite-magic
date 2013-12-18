@@ -22,9 +22,10 @@ class ColorAdjuster( Frame ):
         self._setup_view()
 
     def _setup_view( self ):
-        self._setup_hue()
-        self._setup_saturation()
-        self._setup_value()
+        hue, saturation, value = COMPOSITOR.get_hsv_by_layer( self.layer )
+        self._setup_hue( hue )
+        self._setup_saturation( saturation )
+        self._setup_value( value )
         self._setup_commands()  # doing this after, so that all initial values can be set without triggering the command
 
     def _setup_commands( self ):
@@ -33,28 +34,37 @@ class ColorAdjuster( Frame ):
         self.value_scale.configure( command = self._on_slider_changed )
         self._on_slider_changed( None )
 
-    def _setup_hue( self ):
+    def _setup_hue( self, hue = None ):
+        if hue is None:
+            hue = 0.0
+
         self.hue_label = Label( self )
         self.hue_label.grid( row = 0, column = 0 )
 
         self.hue_scale = Scale( self, from_ = 0.0, to = 360.0, orient = HORIZONTAL, length = 200 )
-        self.hue_scale.set( 0.0 )
+        self.hue_scale.set( hue )
         self.hue_scale.grid( row = 1, column = 0 )
 
-    def _setup_saturation( self ):
+    def _setup_saturation( self, saturation = None ):
+        if saturation is None:
+            saturation = 1.0
+
         self.saturation_label = Label( self )
         self.saturation_label.grid( row = 2, column = 0 )
 
         self.saturation_scale = Scale( self, from_ = 0.0, to = 2.0, orient = HORIZONTAL, length = 200 )
-        self.saturation_scale.set( 1.0 )
+        self.saturation_scale.set( saturation )
         self.saturation_scale.grid( row = 3, column = 0 )
 
-    def _setup_value( self ):
+    def _setup_value( self, value = None ):
+        if value is None:
+            value = 1.0
+
         self.value_label = Label( self )
         self.value_label.grid( row = 4, column = 0 )
 
         self.value_scale = Scale( self, from_ = 0.0, to = 2.0, orient = HORIZONTAL, length = 200 )
-        self.value_scale.set( 1.0 )
+        self.value_scale.set( value )
         self.value_scale.grid( row = 5, column = 0 )
 
     def _on_slider_changed( self, value ):
