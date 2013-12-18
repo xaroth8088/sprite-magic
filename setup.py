@@ -21,6 +21,8 @@ def tree( src ):
 
 # Build the list of static files to copy into the dist/ directory
 data_files = tree( "assets" )
+ui_images = tree( "ui_images" )
+data_files = data_files + ui_images
 
 # Actually build the thing
 setup( windows = ['sprite_magic.py'],
