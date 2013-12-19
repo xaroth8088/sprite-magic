@@ -37,7 +37,7 @@ class Licensing( Frame ):
         self.after( 2500, lambda: self.clipboard_button.configure( text = self.BUTTON_TEXT, state = NORMAL ) )
 
     def on_model_updated( self, reason ):
-        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.SHEET_SELECTED]:
+        if reason not in [COMPOSITOR.OTHER_UPDATED, COMPOSITOR.SELECTED_TYPE_CHANGED, COMPOSITOR.LAYER_ADDED, COMPOSITOR.LAYER_REMOVED, COMPOSITOR.SHEET_SELECTED, COMPOSITOR.LAYER_ORDER_CHANGED]:
             return
 
         # The compositor changed state, so make sure we're up to date, too.
