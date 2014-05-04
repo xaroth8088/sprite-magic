@@ -7,3 +7,4 @@
 * Permit sheet spec files to include absolute image coordinates, instead of the implied grid
 * Horizontal scrolling for preview
 * Find a better GUI toolkit than tkinter, because this is causing a lot of problems with really basic things like scrolling frames, fluid layouts, native widgets, etc.
+* Permit arbitrary ordering of frames for the final animation.  E.g. it's common for a 4-frame animation to be stored with only 3 frames, ordered as "1,2,1,3".  This would permit the output to be smaller by one frame.
